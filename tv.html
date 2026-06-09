@@ -19,7 +19,7 @@
   --banner-h:72px;--banner-side:100px;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
-
+ 
 /* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:300;
@@ -39,10 +39,10 @@ nav{
 .nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);}
 .nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
 .nav-wa{background:var(--gold);color:var(--navy);font-size:12px;font-weight:700;padding:7px 13px;border-radius:6px;text-decoration:none;}
-
+ 
 /* ── MAIN LAYOUT ── */
 .layout{display:flex;height:100vh;padding-top:var(--hdr);}
-
+ 
 /* ── SIDEBAR ── */
 .sidebar{
   width:var(--side);min-width:var(--side);
@@ -75,23 +75,23 @@ nav{
 .ch-num{font-size:10px;color:var(--text3);margin-top:2px;}
 .ch-bd{font-size:9px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 5px;flex-shrink:0;}
 .ch-item.active .ch-bd{color:var(--accent);background:rgba(230,57,70,0.1);border-color:rgba(230,57,70,0.3);}
-
+ 
 /* ── PLAYER COLUMN ── */
 .player-col{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-
+ 
 /* ── BANNER LAYOUT WRAPPER ── */
 /* The "TV frame" = top-banner + middle-row + bottom-banner */
 .tv-frame{
   flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;
 }
-
+ 
 /* Top banner */
 .banner-top{
   height:var(--banner-h);background:var(--navy);
   flex-shrink:0;display:flex;align-items:center;overflow:hidden;position:relative;
   border-bottom:1px solid rgba(255,255,255,0.06);
 }
-
+ 
 /* Middle row: side-banner | video | side-banner */
 .tv-mid{display:flex;flex:1;overflow:hidden;}
 .banner-side{
@@ -101,21 +101,21 @@ nav{
 }
 .banner-side.left{border-right:1px solid rgba(255,255,255,0.06);}
 .banner-side.right{border-left:1px solid rgba(255,255,255,0.06);}
-
+ 
 /* Bottom banner */
 .banner-bottom{
   height:var(--banner-h);background:var(--navy);
   flex-shrink:0;display:flex;align-items:center;overflow:hidden;position:relative;
   border-top:1px solid rgba(255,255,255,0.06);
 }
-
+ 
 /* The actual video area */
 .player-area{
   flex:1;background:#000;position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
 video{width:100%;height:100%;object-fit:contain;display:block;}
-
+ 
 /* ── BANNER CONTENT ── */
 /* Scrolling ticker for top/bottom */
 .banner-ticker{
@@ -138,7 +138,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 }
 .bt-item .bt-price{color:var(--gold);font-size:18px;font-weight:800;}
 .bt-sep{color:rgba(255,255,255,0.2);font-size:20px;padding:0 8px;}
-
+ 
 /* Side banner: vertical rotating cards */
 .side-card{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -157,7 +157,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   font-size:9px;font-weight:800;padding:4px 8px;border-radius:4px;
   text-decoration:none;letter-spacing:0.5px;margin-top:2px;
 }
-
+ 
 /* ── OVERLAYS ── */
 .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:10;}
 .ov.hidden{display:none;}
@@ -178,7 +178,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .ov-et{font-size:16px;color:var(--text2);}
 .ov-em{font-size:12px;color:var(--text3);text-align:center;max-width:260px;line-height:1.6;}
 .btn-retry{background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;}
-
+ 
 /* ── PLAYER CONTROLS ── */
 .ctrl-wrap{
   position:absolute;bottom:0;left:0;right:0;
@@ -209,7 +209,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .c-lbl{font-size:12px;font-weight:600;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:2px;}
 .c-right{margin-left:auto;display:flex;gap:5px;align-items:center;}
 .c-qual{font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12);padding:3px 6px;border-radius:3px;}
-
+ 
 /* ── INFO BAR ── */
 .info-bar{
   height:var(--info);background:var(--bg2);border-top:1px solid var(--border);
@@ -230,7 +230,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .sig span:nth-child(4){height:14px;}
 .sig.good span{background:var(--accent);}
 .sig.med span:nth-child(-n+3){background:var(--gold);}
-
+ 
 /* ── FULLSCREEN overrides ── */
 :fullscreen .layout,
 :-webkit-full-screen .layout{padding-top:0;}
@@ -244,7 +244,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 :-webkit-full-screen .tv-frame{height:100vh;}
 :fullscreen .info-bar,
 :-webkit-full-screen .info-bar{display:none;}
-
+ 
 /* ── MOBILE ── */
 @media(max-width:768px){
   :root{
@@ -252,7 +252,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
     --banner-h:54px;--banner-side:0px;
   }
   .layout{flex-direction:column;}
-
+ 
   /* Sidebar: horizontal strip */
   .sidebar{
     width:100%;min-width:100%;height:auto;
@@ -261,7 +261,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   .sb-head{padding:8px 10px 7px;}
   .sb-tabs{gap:4px;}
   .sb-n{display:none;}
-
+ 
   .ch-list{
     display:flex;flex-direction:row;
     overflow-x:auto;overflow-y:hidden;
@@ -285,22 +285,22 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   .ch-item.active .ch-name{color:#fff;font-weight:600;}
   .ch-num,.ch-bd{display:none;}
   .sb-sw{display:none;}
-
+ 
   /* Hide side banners on mobile, keep top/bottom */
   .banner-side{display:none;}
-
+ 
   /* Player takes all remaining space */
   .player-area{min-height:calc(100vh - 52px - 200px - 48px - 54px - 54px);flex:1;}
-
+ 
   /* Controls: bigger touch targets */
   .c-btn{font-size:22px;padding:8px;}
-
+ 
   /* Nav */
   nav{padding:0 14px;}
   .nav-wa{display:none;}
   .nav-sub{display:none;}
 }
-
+ 
 @media(orientation:landscape) and (max-width:900px){
   .sidebar{display:none !important;}
   .banner-side{display:none !important;}
@@ -321,19 +321,19 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 </style>
 </head>
 <body>
-
+ 
 <nav>
-  <a href="https://ephemeral-nasturtium-226a3b.netlify.app/index.html" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <div class="nav-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div><div class="nav-brand">CETEM</div><div class="nav-sub">TV EN VIVO</div></div>
   </a>
   <div class="nav-r">
     <div class="nav-live"><div class="live-dot"></div>EN VIVO</div>
-    <a href="https://ephemeral-nasturtium-226a3b.netlify.app/index.html" class="nav-back">&#8592; Sitio web</a>
+    <a href="index.html" class="nav-back">&#8592; Sitio web</a>
     <a href="https://wa.me/50257155661" class="nav-wa" target="_blank">&#128222; 5715-5661</a>
   </div>
 </nav>
-
+ 
 <div class="layout">
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -351,11 +351,11 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
     </div>
     <div class="ch-list" id="chList"></div>
   </aside>
-
+ 
   <!-- PLAYER COLUMN -->
   <div class="player-col" id="playerCol">
     <div class="tv-frame" id="tvFrame">
-
+ 
       <!-- TOP BANNER -->
       <div class="banner-top">
         <div class="banner-ticker" id="topTicker">
@@ -382,10 +382,10 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
           <span class="bt-sep">|</span>
         </div>
       </div>
-
+ 
       <!-- MIDDLE ROW -->
       <div class="tv-mid">
-
+ 
         <!-- LEFT BANNER -->
         <div class="banner-side left" id="bannerL">
           <div class="side-card visible" id="sc0">
@@ -394,7 +394,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <div class="side-divider"></div>
             <div class="side-val">400M</div>
             <div class="side-sub">velocidad<br>máxima</div>
-            <a href="https://ephemeral-nasturtium-226a3b.netlify.app/index.html#planes" class="side-cta">Ver plan</a>
+            <a href="index.html#planes" class="side-cta">Ver plan</a>
           </div>
           <div class="side-card" id="sc1">
             <div class="side-icon">&#128222;</div>
@@ -404,11 +404,11 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <div class="side-sub">WhatsApp<br>directo</div>
           </div>
         </div>
-
+ 
         <!-- VIDEO PLAYER -->
         <div class="player-area" id="playerArea">
           <video id="video" playsinline webkit-playsinline></video>
-
+ 
           <!-- OVERLAYS -->
           <div class="ov" id="ovWelcome">
             <div class="ov-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -426,7 +426,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <div class="ov-em" id="ovEM">No se pudo establecer la conexión.</div>
             <button class="btn-retry" onclick="retry()">&#8635; Reintentar</button>
           </div>
-
+ 
           <!-- CONTROLS -->
           <div class="ctrl-wrap" id="ctrlWrap">
             <div class="ctrl-prog">
@@ -446,7 +446,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             </div>
           </div>
         </div>
-
+ 
         <!-- RIGHT BANNER -->
         <div class="banner-side right" id="bannerR">
           <div class="side-card visible" id="sc2">
@@ -455,7 +455,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <div class="side-divider"></div>
             <div class="side-val">166+</div>
             <div class="side-sub">canales<br>en HD</div>
-            <a href="https://ephemeral-nasturtium-226a3b.netlify.app/index.html#servicios" class="side-cta">Ver más</a>
+            <a href="index.html#servicios" class="side-cta">Ver más</a>
           </div>
           <div class="side-card" id="sc3">
             <div class="side-icon">&#9989;</div>
@@ -465,9 +465,9 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <div class="side-sub">sin contrato<br>permanencia</div>
           </div>
         </div>
-
+ 
       </div><!-- /tv-mid -->
-
+ 
       <!-- BOTTOM BANNER -->
       <div class="banner-bottom">
         <div class="banner-ticker" id="botTicker" style="animation-direction:reverse;animation-duration:22s;">
@@ -489,9 +489,9 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
           <span class="bt-sep">|</span>
         </div>
       </div>
-
+ 
     </div><!-- /tv-frame -->
-
+ 
     <!-- INFO BAR -->
     <div class="info-bar">
       <div class="ib-lg"><img id="ibLg" src="" alt="" style="display:none"><span id="ibFb" style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.3)">TV</span></div>
@@ -504,7 +504,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
     </div>
   </div><!-- /player-col -->
 </div><!-- /layout -->
-
+ 
 <script>
 const CH=[{"name": "3ABN Kids Network", "logo": "https://i.imgur.com/z3npqO1.png", "url": "https://3abn.bozztv.com/3abn2/Kids_live/smil:Kids_live.smil/playlist.m3u8"}, {"name": "ADN TV+ (720p)", "logo": "https://i.imgur.com/HQZQyWt.png", "url": "https://d3b73b34o7cvkq.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-gz2sgqzp076kf/adn.m3u8"}, {"name": "Ani-Blast (720p)", "logo": "https://www.medialink.com.hk/img/anione/AOYC1.png", "url": "https://amg19223-amg19223c9-amgplt0019.playout.now3.amagi.tv/playlist/amg19223-amg19223c9-amgplt0019/playlist.m3u8"}, {"name": "Animation+ (1080p) [Geo-blocked]", "logo": "https://i.imgur.com/OIFK6JB.png", "url": "https://pb-ioe9d0fpkd6pp.akamaized.net/playlist.m3u8"}, {"name": "Animax Asia India (1080p) [Geo-blocked]", "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/Animax.png", "url": "https://amg02159-kcglobal-amg02159c1-samsung-in-521.playouts.now.amagi.tv/playlist/amg02159-kcglobal-animax-samsungin/playlist.m3u8"}, {"name": "Anime Vision (1080p)", "logo": "https://i.imgur.com/pUpKznl.png", "url": "https://d1ujfw1zyymzyd.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-a6fukwkbxmex8/live/fast-channel-animevision-64527ec0/fast-channel-animevision-64527ec0.m3u8"}, {"name": "Anime Vision Classics (1080p)", "logo": "https://i.imgur.com/mTaiEE1.png", "url": "https://d82pyvmcw2kdc.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-swfivzrzwamaq/live/fast-channel-animevisionclassics-efc8dc6d/fast-channel-animevisionclassics-efc8dc6d.m3u8"}, {"name": "ANIME x HIDIVE (720p) [Geo-blocked]", "logo": "https://i.imgur.com/v0BlxCa.png", "url": "https://d3f088nnrrvkwf.cloudfront.net/v1/amc_anime_x_hidive_1/samsungheadend_us/latest/main/hls/playlist.m3u8"}, {"name": "Anime Zone TV (480p)", "logo": "https://i.imgur.com/AHaXlCh.png", "url": "http://animezonetv.net/hls/stream.m3u8"}, {"name": "Aniplus Asia (720p)", "logo": "https://i.imgur.com/Im3MePy.png", "url": "https://amg18481-amg18481c1-amgplt0352.playout.now3.amagi.tv/playlist/amg18481-amg18481c1-amgplt0352/playlist.m3u8"}, {"name": "Banijay Mr Bean Animé (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c31-rakuten-fr-3991.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanfrcc-rakutenfr/playlist.m3u8"}, {"name": "BBC Four/CBeebies (1080p) [Geo-Blocked]", "logo": "https://i.imgur.com/aH0PCPy.png", "url": "https://viamotionhsi.netplus.ch/live/eds/bbc4cbeebies/browser-HLS8/bbc4cbeebies.m3u8"}, {"name": "BBC Three/CBBC (1080p) [Geo-Blocked]", "logo": "https://i.imgur.com/CGXC5fp.png", "url": "https://viamotionhsi.netplus.ch/live/eds/bbc3cbbc/browser-HLS8/bbc3cbbc.m3u8"}, {"name": "Blues TV", "logo": "https://i.imgur.com/px0CSti.png", "url": "https://2-fss-2.streamhoster.com/pl_138/205510-3094608-1/playlist.m3u8"}, {"name": "Disney Jr. (1080p) [Geo-blocked]", "logo": "https://www.dsmart.com.tr/api/v1/public/images/kanallar/disneyjr.png", "url": "https://saran-live.ercdn.net/disneyjunior/index.m3u8"}, {"name": "Disney Jr. Latin America South", "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/2024_Disney_Jr._Logo.svg", "url": "http://tr.live.clarovtrcdn.vtrplay.com/disneyjrhdchi/vxfmt=dp/playlist.m3u8?device_profile=STB_HLS_VCAS_LIVE_HD"}, {"name": "DreikoTv (720p) [Not 24/7]", "logo": "https://i.imgur.com/k8U0e0b.png", "url": "https://cloudvideo.servers10.com:8081/8138/index.m3u8"}, {"name": "EnerGeek (720p) [Not 24/7]", "logo": "https://cdn.energeek.cl/logos/EG-Retro-2025_pfp.png", "url": "https://backend.energeek.cl/webtv/egretroweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "EnerGeek Fan (1080p)", "logo": "https://cdn.energeek.cl/logos/EG-Fan-2025_pfp.png", "url": "https://backend.energeek.cl/webtv/egfanweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "Extrema Kids TV [Not 24/7]", "logo": "https://www.vivalivetv.com/public/files/shows/0/1/3027-294x165-FFFFFF.jpg", "url": "https://627bb251f23c7.streamlock.net:444/ExtremaKids/ExtremaKids/playlist.m3u8"}, {"name": "FAN (1080p)", "logo": "https://i.imgur.com/mDeTbaF.png", "url": "http://31.148.48.15/Fan/index.m3u8"}, {"name": "FilmRise Anime (720p)", "logo": "https://i.imgur.com/3wqeGXM.png", "url": "https://dvu7aia8rjlfm.cloudfront.net/master.m3u8"}, {"name": "Geekdot (720p)", "logo": "https://i.imgur.com/jML1u4O.png", "url": "https://stream.ichibantv.com:3764/hybrid/play.m3u8"}, {"name": "Gong (1080p)", "logo": "https://i.imgur.com/lA9UFMG.png", "url": "https://amg01596-gongnetworks-gong-ono-vh5f2.amagi.tv/1080p-vtt/index.m3u8"}, {"name": "Gooder Nation Channel 32 (720p) [Not 24/7]", "logo": "", "url": "https://ssh101stream.ssh101.com/akamaissh101/ssh101/channel32/playlist.m3u8"}, {"name": "Japanim TV (1080p)", "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b97e19f-4243-4d48-b794-ff8cf54d795f-profile_image-300x300.png", "url": "https://foxkidstv.be:3369/stream/play.m3u8"}, {"name": "Jiangxi Children's Channel", "logo": "https://www.tvchinese.net/uploads/tv/jxtv6.jpg", "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv6.m3u8"}, {"name": "Kanade (1080p)", "logo": "https://static.kanade.cl/assets/img/profilepic_512px.png", "url": "https://backend.energeek.cl/webtv/kanadeweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "Kuriakos Kids (1080p)", "logo": "https://i.imgur.com/SRX6EPY.png", "url": "https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8"}, {"name": "Magic Kids (486p)", "logo": "https://i.imgur.com/CMImqQY.png", "url": "https://magicstream.ddns.net/magicstream/stream.m3u8"}, {"name": "MCN6 Music Channel (1080p) [Not 24/7]", "logo": "https://i.imgur.com/j6IiysJ.png", "url": "https://d18fcxaqfnwjhj.cloudfront.net/CDN_Ingest/MCN6_MUSIC.smil/Playlist.m3u8"}, {"name": "Mr. Bean Animated (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c23-samsung-au-4110.playouts.now.amagi.tv/playlist.m3u8"}, {"name": "Mr. Bean Anime Italy (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c29-rakuten-it-3989.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanitcc-rakutenit/playlist.m3u8"}, {"name": "Mr. Bean Anime Spain (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c30-rakuten-es-3990.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanescc-rakutenes/playlist.m3u8"}, {"name": "Multimania (Latvia) (576p)", "logo": "https://i.imgur.com/J9Lwc0T.png", "url": "https://void.greenhosting.ru/Multimania_Mpeg4/index.m3u8"}, {"name": "Naruto (1080p)", "logo": "https://i.imgur.com/M8X3Kvc.png", "url": "https://d21vn5eki5qsdi.cloudfront.net/playlist.m3u8"}, {"name": "Nickelodeon (576p)", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Nickelodeon_2023_logo_%28outline%29.svg/960px-Nickelodeon_2023_logo_%28outline%29.svg.png", "url": "http://195.64.140.147:10121/121"}, {"name": "NickOnline (576p)", "logo": "https://x1co.com.br/logo.png", "url": "https://x1co.com.br/hls/stream.m3u8"}, {"name": "NickToons Brasil (480p)", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nicktoons_logo_%282023%29.svg/330px-Nicktoons_logo_%282023%29.svg.png", "url": "https://stmv2.srvif.com/nicktoons/nicktoons/playlist.m3u8"}, {"name": "NickWeb (720p)", "logo": "https://i.ibb.co/Qvxbvk9B/20260422-174151.png", "url": "https://vs20.live.opencaster.com/nickelodeonbrasil_68f1743d/index.m3u8"}, {"name": "Pingviin (576p)", "logo": "https://i.imgur.com/b6xupqO.png", "url": "https://void.greenhosting.ru/PingviinEE_Mpeg4/index.m3u8"}, {"name": "Placid (1080p) [Not 24/7]", "logo": "https://static.wikitide.net/indietvwiki/0/03/Placid_(2026).svg", "url": "https://toy.vcdn.fyi/placid/index.m3u8"}, {"name": "Pro100TV (576p)", "logo": "https://i.imgur.com/YfQEflM.png", "url": "https://sirius.greenhosting.ru/Pro100tvRu/video.m3u8"}, {"name": "RetroCrush (1080p)", "logo": "https://i.imgur.com/M40b4YI.png", "url": "https://linear-899.frequency.stream/dist/cineverse/899/hls/master/playlist.m3u8"}, {"name": "Slime (576p) [Not 24/7]", "logo": "https://x1co.com.br/slimelogo.png", "url": "https://slime.x1co.com.br/hls/stream.m3u8"}, {"name": "Sony Yay! (1080p) [Geo-blocked]", "logo": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_YAY/images/LOGO_HD/image.png", "url": "https://sl.vodep39240327.workers.dev/channel/SONY%20YAY.m3u8"}, {"name": "SX3 (1080p) [Geo-blocked]", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/SX3_logo.svg/960px-SX3_logo.svg.png", "url": "https://directes-tv-cat.3catdirectes.cat/live-content/super3-hls/master.m3u8"}, {"name": "Tiguerito TV (720p) [Not 24/7]", "logo": "https://dominicanchannels.com/wp-content/uploads/tigueritos-tv.jpg", "url": "https://ss2.tvrdomi.com:1936/tigueritostv/tigueritostv/playlist.m3u8"}, {"name": "Toonami Aftermath East (480p)", "logo": "https://i.imgur.com/aSjhZK7.png", "url": "http://api.toonamiaftermath.com:3000/est/playlist.m3u8"}, {"name": "Yu-Gi-Oh! (1080p)", "logo": "https://i.imgur.com/Tl6aW2u.png", "url": "https://amg01796-amg01796c19-rakuten-gb-7486.playouts.now.amagi.tv/playlist/amg01796-fastmediafast-yugioh2en-rakutengb/playlist.m3u8"}, {"name": "Мультимания (576p)", "logo": "https://i.imgur.com/abh8ZBA.png", "url": "https://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8"}, {"name": "Пингвин (720p)", "logo": "https://i.imgur.com/hfXoJIY.png", "url": "https://sirius.greenhosting.ru/PingvinRu/video.m3u8"}, {"name": "Солнце (576p)", "logo": "https://i.imgur.com/HCefxaK.png", "url": "http://tv.mediacdn.ru/live/solntse/playlist.m3u8"}, {"name": "优漫卡通 (576p)", "logo": "https://i.imgur.com/GZInf2W.png", "url": "http://183.207.249.15/PLTV/4/224/3221225933/index.m3u8"}, {"name": "金鹰卡通 (576p)", "logo": "https://i.imgur.com/xfVHrKQ.png", "url": "http://223.110.245.145/ott.js.chinamobile.com/PLTV/3/224/3221226303/index.m3u8"}];
 const PROXIES=[u=>u,u=>'https://corsproxy.io/?'+encodeURIComponent(u),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u)];
@@ -512,11 +512,11 @@ const FILTERS={all:()=>true,ani:c=>/anim|cartoon|manga|anime/i.test(c.name),kid:
 let idx=-1,af='all',hls=null,ctT=null,scT=null;
 const $=id=>document.getElementById(id);
 const vid=$('video'),pa=$('playerArea');
-
+ 
 function ini(n){return n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'TV';}
 function showOv(id){['ovWelcome','ovLoad','ovError'].forEach(x=>$(x).classList.toggle('hidden',x!==id));}
 function hideOv(){['ovWelcome','ovLoad','ovError'].forEach(x=>$(x).classList.add('hidden'));}
-
+ 
 // Buffer stats
 setInterval(()=>{
   if(!vid.buffered.length)return;
@@ -533,7 +533,7 @@ setInterval(()=>{
     $('ibSig').className='sig'+(ah>8?' good':ah>3?' med':'');
   }catch(e){}
 },1000);
-
+ 
 // Controls show/hide — pointer AND touch
 function showCtrl(){pa.classList.add('cv');clearTimeout(ctT);ctT=setTimeout(()=>pa.classList.remove('cv'),3500);}
 pa.addEventListener('pointermove',showCtrl);
@@ -541,7 +541,7 @@ pa.addEventListener('touchstart',()=>{
   if(pa.classList.contains('cv'))pa.classList.remove('cv');
   else showCtrl();
 },{passive:true});
-
+ 
 // Play/pause — using pointer events so it's not blocked
 $('btnPlay').addEventListener('pointerup',e=>{e.stopPropagation();togglePlay();});
 function togglePlay(){
@@ -550,28 +550,37 @@ function togglePlay(){
 }
 vid.addEventListener('play',()=>$('btnPlay').innerHTML='&#9646;&#9646;');
 vid.addEventListener('pause',()=>$('btnPlay').innerHTML='&#9654;');
-
+ 
 $('btnMute').addEventListener('pointerup',e=>{e.stopPropagation();toggleMute();});
 function toggleMute(){
   vid.muted=!vid.muted;
   $('btnMute').innerHTML=vid.muted?'&#128263;':'&#128266;';
 }
 $('volSl').addEventListener('input',e=>{vid.volume=parseFloat(e.target.value);});
-
+ 
 // Fullscreen — works on mobile too
 $('btnFS').addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
 function toggleFS(){
-  const el=document.documentElement;
-  if(document.fullscreenElement||document.webkitFullscreenElement){
-    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+  const el=document.getElementById('tvFrame');
+  const fs=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement;
+  if(fs){
+    const exit=document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen;
+    if(exit)exit.call(document);
   }else{
-    const req=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen;
-    if(req)req.call(el);
-    // Also try screen orientation
-    if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{});
+    const req=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen;
+    if(req){
+      req.call(el).catch(()=>{
+        // fallback: try video element directly
+        const vreq=vid.requestFullscreen||vid.webkitRequestFullscreen||vid.webkitEnterFullscreen;
+        if(vreq)vreq.call(vid).catch(()=>{});
+      });
+    } else {
+      // iOS Safari fallback - use video native fullscreen
+      if(vid.webkitEnterFullscreen)vid.webkitEnterFullscreen();
+    }
   }
 }
-
+ 
 // Auto fullscreen on landscape rotate (mobile)
 // Auto landscape fullscreen
 function tryAutoFS(){
@@ -600,7 +609,7 @@ if(screen.orientation){
     }
   });
 }
-
+ 
 // Side banner rotation
 let scIdx=0;
 const sCards=[[0,1],[2,3]];
@@ -620,7 +629,7 @@ function rotateSideCards(){
   },5000);
 }
 rotateSideCards();
-
+ 
 // Proxy fallback
 function tryP(c,pi){
   if(pi>=PROXIES.length){$('ovEM').textContent='Canal no disponible. Intenta con otro.';showOv('ovError');return;}
@@ -644,7 +653,7 @@ function tryP(c,pi){
     vid.addEventListener('error',()=>tryP(c,pi+1),{once:true});
   }
 }
-
+ 
 function playChannel(i){
   const c=CH[i];if(!c)return;
   idx=i;
@@ -660,7 +669,7 @@ function playChannel(i){
   showOv('ovLoad');tryP(c,0);
 }
 function retry(){if(idx>=0)playChannel(idx);}
-
+ 
 function render(list){
   const el=$('chList');el.innerHTML='';
   $('sbN').textContent=list.length+' canal'+(list.length!==1?'es':'');
@@ -675,20 +684,20 @@ function render(list){
     el.appendChild(item);
   });
 }
-
+ 
 function applyF(){
   const q=$('sbS').value.trim().toLowerCase();
   const fn=FILTERS[af]||FILTERS.all;
   render(CH.filter(c=>fn(c)&&(!q||c.name.toLowerCase().includes(q))));
 }
-
+ 
 $('sbTabs').addEventListener('click',e=>{
   const t=e.target.closest('.sb-tab');if(!t)return;
   document.querySelectorAll('.sb-tab').forEach(x=>x.classList.remove('active'));
   t.classList.add('active');af=t.dataset.f;applyF();
 });
 $('sbS').addEventListener('input',applyF);
-
+ 
 document.addEventListener('keydown',e=>{
   if(['INPUT','TEXTAREA'].includes(e.target.tagName))return;
   if(e.key==='ArrowUp'&&idx>0)playChannel(idx-1);
@@ -697,7 +706,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='f'||e.key==='F')toggleFS();
   if(e.key==='m'||e.key==='M')toggleMute();
 });
-
+ 
 render(CH);
 </script>
 </body>
