@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CETEM — Servicios, Planes y Contacto</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:70px;}
+body{font-family:'Inter',sans-serif;color:#0f172a;background:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+:root{
+  --navy:#0d2461;--navy2:#162d75;--blue2:#2563eb;--sky:#38bdf8;
+  --gold:#f59e0b;--gold2:#fbbf24;
+  --text:#0f172a;--text2:#334155;--text3:#64748b;
+  --border:rgba(13,36,97,0.12);--accent:#e63946;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(13,36,97,0.97);backdrop-filter:blur(10px);
+  height:62px;display:flex;align-items:center;padding:0 32px;
+  border-bottom:1px solid rgba(255,255,255,0.08);gap:12px;
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-dots{display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:4px;}
+.nav-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-dots span:nth-child(2n){opacity:0.35;}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:3px;}
+.nav-sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:1px;}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;}
+.nav-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:500;padding:8px 14px;border-radius:6px;transition:all 0.15s;}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,0.08);}
+.nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:500;padding:8px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);transition:all 0.15s;}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.4);}
+.nav-live{display:flex;align-items:center;gap:6px;background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.4);color:#e63946;font-size:10px;font-weight:700;padding:6px 12px;border-radius:20px;letter-spacing:1.5px;text-decoration:none;margin-left:4px;}
+.live-dot{width:6px;height:6px;background:#e63946;border-radius:50%;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.nav-cta{background:var(--gold);color:var(--navy);font-size:13px;font-weight:700;padding:8px 16px;border-radius:6px;text-decoration:none;margin-left:4px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;margin-left:auto;}
+.hamburger span{width:22px;height:2px;background:#fff;border-radius:2px;}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(13,36,97,0.98);z-index:199;padding:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.mobile-menu.open{display:flex;flex-direction:column;gap:4px;}
+.mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:15px;padding:13px 16px;border-radius:8px;font-weight:500;}
+.mobile-menu a:active{background:rgba(255,255,255,0.08);}
+.mm-live{color:#e63946 !important;font-weight:700 !important;}
+
+/* PAGE HEADER */
+.page-header{
+  padding-top:62px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  padding-bottom:48px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.page-header::before{
+  content:'';position:absolute;inset:0;opacity:0.04;
+  background-image:radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.ph-inner{position:relative;z-index:1;padding:48px 32px 0;}
+.ph-label{font-size:11px;font-weight:700;color:var(--sky);letter-spacing:3px;margin-bottom:12px;}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:#fff;line-height:1;}
+.ph-title em{color:var(--gold);font-style:normal;}
+.ph-desc{font-size:16px;color:rgba(255,255,255,0.6);margin-top:12px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6;}
+.ph-tabs{display:flex;justify-content:center;gap:8px;margin-top:32px;flex-wrap:wrap;}
+.ph-tab{color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;font-weight:500;padding:8px 18px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);transition:all 0.15s;}
+.ph-tab:hover,.ph-tab.active{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3);}
+
+/* SECTIONS */
+section{padding:72px 32px;}
+.inner{max-width:1200px;margin:0 auto;}
+.sec-label{font-size:11px;font-weight:700;color:var(--blue2);letter-spacing:3px;margin-bottom:12px;text-transform:uppercase;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:800;color:var(--navy);line-height:1.1;margin-bottom:16px;}
+.sec-title em{color:var(--blue2);font-style:normal;}
+.sec-desc{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;}
+
+/* SERVICES */
+#servicios{background:#f0f4ff;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+.svc-card{background:#fff;border-radius:16px;padding:32px 26px;border:1px solid var(--border);transition:all 0.2s;position:relative;overflow:hidden;}
+.svc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue2);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.svc-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(13,36,97,0.09);}
+.svc-card:hover::after{transform:scaleX(1);}
+.svc-icon{width:52px;height:52px;background:#f0f4ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
+.svc-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+.svc-desc{font-size:14px;color:var(--text2);line-height:1.65;}
+.svc-list{margin-top:16px;list-style:none;display:flex;flex-direction:column;gap:7px;}
+.svc-list li{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.svc-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue2);flex-shrink:0;}
+
+/* PLANS */
+#planes{background:#fff;}
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+.plan{border-radius:16px;padding:32px 26px;border:2px solid var(--border);transition:all 0.2s;text-align:center;}
+.plan.featured{border-color:var(--blue2);background:var(--navy);transform:scale(1.04);box-shadow:0 24px 48px rgba(13,36,97,0.22);}
+.plan-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px;}
+.plan-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;color:var(--navy);margin-bottom:6px;}
+.plan.featured .plan-name{color:#fff;}
+.plan-price{font-family:'Barlow Condensed',sans-serif;font-size:54px;font-weight:800;color:var(--navy);line-height:1;margin:14px 0 2px;}
+.plan.featured .plan-price{color:var(--gold);}
+.plan-cur{font-size:18px;font-weight:600;vertical-align:top;margin-top:10px;display:inline-block;}
+.plan-per{font-size:13px;color:var(--text3);margin-bottom:20px;}
+.plan.featured .plan-per{color:rgba(255,255,255,0.45);}
+.plan-feats{list-style:none;text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+.plan-feats li{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:10px;}
+.plan.featured .plan-feats li{color:rgba(255,255,255,0.75);}
+.plan-feats li::before{content:"✓";width:18px;height:18px;background:var(--blue2);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.plan.featured .plan-feats li::before{background:var(--gold);color:var(--navy);}
+.plan-btn{display:block;padding:12px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;text-align:center;transition:all 0.2s;border:2px solid var(--navy);color:var(--navy);}
+.plan-btn:hover{transform:translateY(-2px);}
+.plan-btn.dark{background:var(--navy);color:#fff;}
+.plan-btn.bright{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* ABOUT */
+#nosotros{background:var(--navy);}
+.nos-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.nos-grid .sec-title{color:#fff;}
+.nos-grid .sec-label{color:var(--sky);}
+.nos-grid .sec-desc{color:rgba(255,255,255,0.6);}
+.nos-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
+.nos-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;}
+.nos-stat .v{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:800;color:var(--gold);line-height:1;}
+.nos-stat .k{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:0.5px;}
+.nos-feats{display:flex;flex-direction:column;gap:22px;}
+.nos-feat{display:flex;gap:16px;align-items:flex-start;}
+.nos-feat-ic{width:44px;height:44px;background:rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.nos-feat-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;}
+.nos-feat-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+
+/* CONTACT */
+#contacto{background:#f0f4ff;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:48px;align-items:start;}
+.c-items{display:flex;flex-direction:column;gap:22px;}
+.c-item{display:flex;gap:16px;align-items:flex-start;}
+.c-ic{width:44px;height:44px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.c-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px;}
+.c-val{font-size:14px;color:var(--text2);}
+.c-val a{color:var(--blue2);text-decoration:none;}
+.contact-form{background:#fff;border-radius:16px;padding:32px;border:1px solid var(--border);}
+.contact-form h3{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:20px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.fg label{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.5px;}
+.fg input,.fg textarea,.fg select{border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit;background:#fff;transition:border-color 0.15s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue2);}
+.fg textarea{resize:vertical;min-height:95px;}
+.form-submit{width:100%;background:var(--navy);color:#fff;border:none;padding:13px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s;}
+.form-submit:hover{background:var(--navy2);}
+
+/* FOOTER */
+footer{background:#080f24;padding:40px 32px 24px;}
+.footer-in{max-width:1200px;margin:0 auto;}
+.footer-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:3px;}
+.footer-tag{font-size:11px;color:rgba(255,255,255,0.25);margin-top:3px;}
+.footer-links{display:flex;gap:22px;flex-wrap:wrap;}
+.footer-links a{color:rgba(255,255,255,0.35);text-decoration:none;font-size:13px;transition:color 0.15s;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:20px;font-size:12px;color:rgba(255,255,255,0.2);}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.svc-grid,.plan-grid{grid-template-columns:1fr 1fr;}.plan.featured{transform:none;}}
+@media(max-width:768px){
+  nav{padding:0 16px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  section{padding:52px 20px;}
+  .sec-title{font-size:32px;}
+  .ph-title{font-size:36px;}
+  .ph-inner{padding:32px 20px 0;}
+  .svc-grid,.plan-grid,.nos-grid,.contact-grid{grid-template-columns:1fr;}
+  .plan.featured{transform:none;}
+  .fr{grid-template-columns:1fr;}
+  .nos-stats{grid-template-columns:1fr 1fr;}
+  .footer-top{flex-direction:column;gap:20px;text-align:center;}
+  .footer-links{justify-content:center;}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div><div class="nav-brand">CETEM</div><div class="nav-sub">FIBRA ÓPTICA & TV DIGITAL</div></div>
+  </a>
+  <div class="nav-links">
+    <a href="#servicios" class="nav-link">Servicios</a>
+    <a href="#planes" class="nav-link">Planes</a>
+    <a href="#nosotros" class="nav-link">Nosotros</a>
+    <a href="#contacto" class="nav-link">Contacto</a>
+    <a href="tv.html" class="nav-live"><div class="live-dot"></div>TV EN VIVO</a>
+    <a href="https://wa.me/50257155661" class="nav-cta" target="_blank">&#128222; 5715-5661</a>
+    <a href="index.html" class="nav-back">&#8592; Inicio</a>
+  </div>
+  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html" onclick="document.getElementById('mm').classList.remove('open')">&#8592; Inicio</a>
+  <a href="#servicios" onclick="document.getElementById('mm').classList.remove('open')">Servicios</a>
+  <a href="#planes" onclick="document.getElementById('mm').classList.remove('open')">Planes</a>
+  <a href="#nosotros" onclick="document.getElementById('mm').classList.remove('open')">Nosotros</a>
+  <a href="#contacto" onclick="document.getElementById('mm').classList.remove('open')">Contacto</a>
+  <a href="tv.html" class="mm-live">&#128250; TV en Vivo</a>
+  <a href="https://wa.me/50257155661" target="_blank">&#128222; 5715-5661</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-label">CETEM GUATEMALA</div>
+    <h1 class="ph-title">Nuestros <em>Servicios</em></h1>
+    <p class="ph-desc">Todo lo que necesitas saber sobre internet, TV digital, planes y cómo contactarnos.</p>
+    <div class="ph-tabs">
+      <a href="#servicios" class="ph-tab">Servicios</a>
+      <a href="#planes" class="ph-tab">Planes</a>
+      <a href="#nosotros" class="ph-tab">Nosotros</a>
+      <a href="#contacto" class="ph-tab">Contacto</a>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="inner">
+    <div class="sec-label">Lo que ofrecemos</div>
+    <h2 class="sec-title">Servicios <em>CETEM</em></h2>
+    <p class="sec-desc">Tecnología de fibra óptica para llevar la mejor conectividad y entretenimiento a tu hogar.</p>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">&#9889;</div>
+        <div class="svc-title">Internet Fibra Óptica</div>
+        <div class="svc-desc">Conexión de alta velocidad con tecnología de fibra para máximo rendimiento en tu hogar u oficina.</div>
+        <ul class="svc-list"><li>Hasta 400 Megas residencial</li><li>Latencia ultra baja</li><li>Sin interrupciones</li><li>Router WiFi incluido</li></ul>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#128250;</div>
+        <div class="svc-title">TV Digital</div>
+        <div class="svc-desc">Más de 166 canales en alta definición transmitidos por fibra óptica con calidad superior.</div>
+        <ul class="svc-list"><li>166+ canales en HD</li><li>Nacionales e internacionales</li><li>Deportes, películas, noticias</li><li>TV desde cualquier dispositivo</li></ul>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#128736;</div>
+        <div class="svc-title">Soporte Técnico</div>
+        <div class="svc-desc">Equipo técnico especializado disponible para resolver cualquier inconveniente rápidamente.</div>
+        <ul class="svc-list"><li>Atención 24/7</li><li>Soporte en sitio</li><li>WhatsApp directo</li><li>Respuesta rápida garantizada</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+  <div class="inner">
+    <div class="sec-label">Elige tu plan</div>
+    <h2 class="sec-title">Planes de <em>Internet</em></h2>
+    <p class="sec-desc">Todos los planes incluyen instalación gratuita y soporte técnico. Sin contratos de permanencia.</p>
+    <div class="plan-grid">
+      <div class="plan">
+        <div class="plan-name">Básico</div>
+        <div class="plan-price"><span class="plan-cur">Q</span>150</div>
+        <div class="plan-per">por mes</div>
+        <ul class="plan-feats"><li>50 Megas de velocidad</li><li>WiFi incluido</li><li>TV Digital básica</li><li>Instalación gratis</li></ul>
+        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Básico de 50 Megas" class="plan-btn dark" target="_blank">Contratar plan</a>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">MÁS POPULAR</div>
+        <div class="plan-name">Estándar</div>
+        <div class="plan-price"><span class="plan-cur">Q</span>250</div>
+        <div class="plan-per">por mes</div>
+        <ul class="plan-feats"><li>200 Megas de velocidad</li><li>WiFi de alta potencia</li><li>TV Digital completa</li><li>Instalación gratis</li><li>Soporte prioritario</li></ul>
+        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Estándar de 200 Megas" class="plan-btn bright" target="_blank">Contratar plan</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><span class="plan-cur">Q</span>350</div>
+        <div class="plan-per">por mes</div>
+        <ul class="plan-feats"><li>400 Megas de velocidad</li><li>WiFi empresarial</li><li>TV Digital premium</li><li>Instalación gratis</li><li>Soporte 24/7 dedicado</li><li>IP fija disponible</li></ul>
+        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Premium de 400 Megas" class="plan-btn dark" target="_blank">Contratar plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="inner">
+    <div class="nos-grid">
+      <div>
+        <div class="sec-label">Quiénes somos</div>
+        <h2 class="sec-title">Conectando <span style="color:var(--gold)">comunidades</span></h2>
+        <p class="sec-desc">CETEM es una empresa guatemalteca especializada en llevar internet de fibra óptica y televisión digital a hogares y negocios de San Antonio Sacatepéquez y la región.</p>
+        <div class="nos-stats">
+          <div class="nos-stat"><div class="v">400M</div><div class="k">VELOCIDAD MÁXIMA</div></div>
+          <div class="nos-stat"><div class="v">166+</div><div class="k">CANALES TV</div></div>
+          <div class="nos-stat"><div class="v">24/7</div><div class="k">SOPORTE</div></div>
+          <div class="nos-stat"><div class="v">100%</div><div class="k">FIBRA ÓPTICA</div></div>
+        </div>
+      </div>
+      <div class="nos-feats">
+        <div class="nos-feat"><div class="nos-feat-ic">&#127981;</div><div><div class="nos-feat-title">Tecnología de punta</div><div class="nos-feat-desc">Infraestructura 100% fibra óptica para garantizar la mayor velocidad y estabilidad.</div></div></div>
+        <div class="nos-feat"><div class="nos-feat-ic">&#128205;</div><div><div class="nos-feat-title">Cobertura local</div><div class="nos-feat-desc">Oficinas media cuadra abajo de la Caseta San Antonio Sac. S.M., cerca de ti.</div></div></div>
+        <div class="nos-feat"><div class="nos-feat-ic">&#128091;</div><div><div class="nos-feat-title">Atención personalizada</div><div class="nos-feat-desc">Contacto directo por WhatsApp. Equipo comprometido con la satisfacción del cliente.</div></div></div>
+        <div class="nos-feat"><div class="nos-feat-ic">&#9989;</div><div><div class="nos-feat-title">Sin contratos de permanencia</div><div class="nos-feat-desc">Nuestro servicio se mantiene por calidad, no por obligaciones contractuales.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="inner">
+    <div class="sec-label">Estamos aquí</div>
+    <h2 class="sec-title">Contáctanos</h2>
+    <p class="sec-desc">¿Listo para conectarte? Escríbenos por WhatsApp o visítanos en nuestras oficinas.</p>
+    <div class="contact-grid">
+      <div class="c-items">
+        <div class="c-item"><div class="c-ic">&#128222;</div><div><div class="c-title">WhatsApp</div><div class="c-val"><a href="https://wa.me/50257155661" target="_blank">5715-5661</a></div></div></div>
+        <div class="c-item"><div class="c-ic">&#128205;</div><div><div class="c-title">Ubicación</div><div class="c-val">Media cuadra abajo de la Caseta<br>San Antonio Sac. S.M., Guatemala</div></div></div>
+        <div class="c-item"><div class="c-ic">&#128336;</div><div><div class="c-title">Horario de atención</div><div class="c-val">Lunes a Sábado: 8:00 AM – 6:00 PM<br>Soporte técnico: 24/7</div></div></div>
+        <div class="c-item"><div class="c-ic">&#128250;</div><div><div class="c-title">TV Digital</div><div class="c-val">166+ canales disponibles en vivo<br><a href="tv.html">Ver TV ahora →</a></div></div></div>
+      </div>
+      <div class="contact-form">
+        <h3>Solicitar información</h3>
+        <div class="fr">
+          <div class="fg"><label>NOMBRE</label><input type="text" id="fname" placeholder="Tu nombre"></div>
+          <div class="fg"><label>TELÉFONO</label><input type="tel" id="fphone" placeholder="Tu número"></div>
+        </div>
+        <div class="fg"><label>SERVICIO DE INTERÉS</label><select id="fsvc"><option>Internet Fibra Óptica</option><option>TV Digital</option><option>Paquete Internet + TV</option><option>Soporte técnico</option></select></div>
+        <div class="fg"><label>MENSAJE</label><textarea id="fmsg" placeholder="¿En qué podemos ayudarte?"></textarea></div>
+        <button class="form-submit" onclick="sendWA()">Enviar por WhatsApp &#128222;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">CETEM</div>
+        <div class="footer-tag">Internet y TV Digital · San Antonio Sac. S.M., Guatemala</div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#planes">Planes</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+        <a href="tv.html">TV en Vivo</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2024 CETEM · Todos los derechos reservados</div>
+      <div>WhatsApp: 5715-5661 · San Antonio Sac. S.M., Guatemala</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function sendWA(){
+  const n=document.getElementById('fname').value||'Cliente';
+  const s=document.getElementById('fsvc').value;
+  const m=document.getElementById('fmsg').value||'';
+  window.open('https://wa.me/50257155661?text='+encodeURIComponent('Hola CETEM, soy '+n+'. Me interesa: '+s+'. '+m),'_blank');
+}
+</script>
+</body>
+</html>
