@@ -43,6 +43,42 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,36,97,0.9
 .mobile-menu .mm-live{color:#e63946;font-weight:700;}
  
 /* HERO */
+ 
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:0;}
+.btn-planes,.btn-tv{
+  border:none;cursor:pointer;font-family:'Inter',sans-serif;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 32px;border-radius:10px;font-size:15px;font-weight:700;
+  transition:all 0.2s;letter-spacing:0.3px;
+  min-width:200px;justify-content:center;
+}
+.btn-planes{
+  background:var(--gold);color:var(--navy);
+  box-shadow:0 4px 20px rgba(245,158,11,0.4);
+}
+.btn-planes:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,158,11,0.5);}
+.btn-planes:active{transform:translateY(0);}
+.btn-tv{
+  background:#e63946;color:#fff;
+  box-shadow:0 4px 20px rgba(230,57,70,0.4);
+  position:relative;overflow:hidden;
+}
+.btn-tv:hover{background:#c1121f;transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,57,70,0.5);}
+.btn-tv:active{transform:translateY(0);}
+.btn-icon{font-size:18px;}
+.btn-icon-live{
+  width:10px;height:10px;border-radius:50%;
+  background:#fff;flex-shrink:0;
+  animation:blink 1.2s infinite;
+}
+.btn-arrow{font-size:18px;margin-left:2px;}
+@media(max-width:768px){
+  .btn-planes,.btn-tv{
+    width:100%;min-width:0;padding:18px 24px;font-size:16px;
+  }
+  .hero-btns{flex-direction:column;gap:12px;width:100%;max-width:360px;}
+}
+ 
 #home{min-height:100vh;padding-top:62px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#0a1f5c 100%);display:flex;align-items:center;position:relative;overflow:hidden;}
 .hero-pattern{position:absolute;inset:0;opacity:0.05;}
 .hero-pattern svg{width:100%;height:100%;}
@@ -52,10 +88,10 @@ h1{font-family:'Barlow Condensed',sans-serif;font-size:58px;font-weight:800;colo
 h1 span{color:var(--gold);}
 .hero-desc{font-size:16px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:32px;max-width:440px;}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;} .btn-gold,.btn-outline{min-height:52px;display:flex;align-items:center;justify-content:center;}
-.btn-gold{background:var(--gold);color:var(--navy);font-size:14px;font-weight:700;padding:14px 28px;border-radius:8px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
-.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);}
-.btn-outline{background:rgba(255,255,255,0.1);color:#fff;font-size:14px;font-weight:500;padding:14px 28px;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
-.btn-outline:hover{background:rgba(255,255,255,0.18);}
+.btn-gold{display:none;}
+ 
+.btn-outline{display:none;}
+ 
 .hero-stats{display:flex;gap:36px;margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.1);}
 .hstat .v{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:800;color:#fff;line-height:1;}
 .hstat .v em{color:var(--gold);font-style:normal;}
@@ -233,8 +269,15 @@ footer{background:#080f24;padding:40px 32px 24px;}
       <h1>Internet y TV<br><span>para tu hogar</span></h1>
       <p class="hero-desc">Conectividad de fibra óptica de alto desempeño con televisión digital. Hasta 400 Megas residencial con instalación gratuita.</p>
       <div class="hero-btns">
-        <a href="#planes" class="btn-gold">Ver planes y precios</a>
-        <a href="tv.html" class="btn-outline">&#128250; TV en Vivo</a>
+        <button class="btn-planes" onclick="window.location.hash='planes'">
+          <span class="btn-icon">&#128237;</span>
+          <span>Ver planes y precios</span>
+        </button>
+        <button class="btn-tv" onclick="window.location.href='tv.html'">
+          <span class="btn-icon-live"></span>
+          <span>Ver TV en Vivo</span>
+          <span class="btn-arrow">&#8594;</span>
+        </button>
       </div>
       <div class="hero-stats">
         <div class="hstat"><div class="v">400<em>M</em></div><div class="k">MEGAS MÁXIMOS</div></div>
