@@ -185,9 +185,13 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   width:auto;
   background:rgba(0,0,0,0.5);
   padding:6px 10px;border-radius:6px;
-  opacity:0;transition:opacity 0.25s;
+  opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;
   display:flex;flex-direction:column;gap:4px;
   z-index:55;
+  pointer-events:none;
+}
+.player-area.cv .ctrl-wrap{
+  opacity:1;visibility:visible;pointer-events:auto;
 }
 .player-area:hover .ctrl-wrap,.player-area.cv .ctrl-wrap{opacity:1;}
 
@@ -399,6 +403,19 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   /* Controls */
   .ctrl-wrap{bottom:36px !important;}
 }
+
+@media(max-width:768px){
+  .ctrl-wrap{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+  .player-area.cv .ctrl-wrap{
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -513,7 +530,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
       <div id="overlayAd" style="
         position:absolute;bottom:0;left:0;right:0;
         background:linear-gradient(transparent,rgba(13,36,97,0.96));
-        padding:36px 20px 14px;z-index:50;
+        padding:80px 20px 14px;z-index:50;
         display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
       ">
         <div>
