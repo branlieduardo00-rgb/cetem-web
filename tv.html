@@ -188,8 +188,8 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   display:flex;flex-direction:column;gap:8px;
   z-index:20;
 }
-.player-area:hover .ctrl-wrap,
-.player-area.cv .ctrl-wrap{opacity:1;}
+.player-area:hover .ctrl-wrap,.player-area.cv .ctrl-wrap{opacity:1;}
+.player-area:hover #overlayAd,.player-area.cv #overlayAd{opacity:0;transition:opacity 0.25s;}
 .ctrl-prog{position:relative;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin-bottom:2px;cursor:pointer;}
 .ctrl-pbuf{position:absolute;inset:0;background:rgba(255,255,255,0.22);border-radius:2px;width:0%;}
 .ctrl-pfill{position:absolute;inset:0;background:var(--accent);border-radius:2px;width:0%;}
@@ -422,7 +422,30 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             <button class="btn-retry" onclick="retry()">&#8635; Reintentar</button>
           </div>
 
-          <!-- CONTROLS -->
+    
+      <!-- BOTTOM OVERLAY AD -->
+      <div id="overlayAd" style="
+        position:absolute;bottom:0;left:0;right:0;
+        background:linear-gradient(transparent,rgba(13,36,97,0.92));
+        padding:32px 20px 16px;z-index:15;
+        display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+      ">
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.4);margin-bottom:4px;">PUBLICIDAD</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1.1;">
+            Internet <span style="color:#f59e0b;">400 Megas</span> — Solo <span style="color:#f59e0b;">Q350/mes</span>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;">
+            Fibra óptica &middot; Instalación gratis &middot; San Antonio Sac. S.M.
+          </div>
+        </div>
+        <a href="https://wa.me/50257155661" target="_blank" style="
+          flex-shrink:0;background:#f59e0b;color:#0d2461;
+          font-size:12px;font-weight:800;padding:10px 16px;
+          border-radius:8px;text-decoration:none;letter-spacing:0.5px;white-space:nowrap;
+        ">&#128222; Contratar</a>
+      </div>
+      <!-- CONTROLS -->
           <div class="ctrl-wrap" id="ctrlWrap">
             <div class="ctrl-prog">
               <div class="ctrl-pbuf" id="ctrlBuf"></div>
@@ -693,6 +716,7 @@ document.addEventListener('keydown',e=>{
 });
 
 render(CH);
+playChannel(0);
 </script>
 </body>
 </html>
