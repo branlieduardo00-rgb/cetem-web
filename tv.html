@@ -2,230 +2,316 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CETEM — Internet Fibra Óptica y TV Digital</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>CETEM TV — En Vivo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.12/dist/hls.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;scroll-padding-top:70px;}
-body{font-family:'Inter',sans-serif;color:#0f172a;background:#fff;overflow-x:hidden;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
-  --navy:#0d2461;--navy2:#162d75;
-  --blue2:#2563eb;--sky:#38bdf8;
-  --gold:#f59e0b;--gold2:#fbbf24;
-  --text:#0f172a;--text2:#334155;--text3:#64748b;
-  --border:rgba(13,36,97,0.12);--accent:#e63946;
+  --navy:#0d2461;--gold:#f59e0b;--gold2:#fbbf24;
+  --accent:#e63946;
+  --bg:#07080d;--bg2:#0d0e17;--bg3:#141520;--bg4:#1a1c2a;
+  --text:rgba(255,255,255,0.92);--text2:rgba(255,255,255,0.5);--text3:rgba(255,255,255,0.22);
+  --border:rgba(255,255,255,0.07);
+  --hdr:58px;--side:290px;--info:54px;
+  --banner-h:72px;--banner-side:100px;
 }
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,36,97,0.97);backdrop-filter:blur(10px);height:62px;display:flex;align-items:center;padding:0 32px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.nav-dots{display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:4px;}
-.nav-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.9);}
-.nav-dots span:nth-child(2n){opacity:0.35;}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:3px;}
-.nav-sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:1px;}
-.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;}
-.nav-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:500;padding:8px 14px;border-radius:6px;transition:all 0.15s;}
-.nav-link:hover{color:#fff;background:rgba(255,255,255,0.08);}
-.nav-live{display:flex;align-items:center;gap:6px;background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.4);color:#e63946;font-size:10px;font-weight:700;padding:6px 12px;border-radius:20px;letter-spacing:1.5px;text-decoration:none;margin-left:8px;}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:300;
+  background:rgba(13,36,97,0.97);border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;padding:0 20px;gap:12px;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-dots{display:grid;grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,7px);gap:3px;}
+.nav-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-dots span:nth-child(2n){opacity:0.3;}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:3px;}
+.nav-sub{font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-top:1px;}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-live{display:flex;align-items:center;gap:6px;background:rgba(230,57,70,0.15);border:1px solid rgba(230,57,70,0.4);color:#e63946;font-size:10px;font-weight:700;padding:5px 11px;border-radius:20px;letter-spacing:1.5px;}
 .live-dot{width:6px;height:6px;background:#e63946;border-radius:50%;animation:blink 1.4s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.nav-cta{background:var(--gold);color:var(--navy);font-size:13px;font-weight:700;padding:8px 18px;border-radius:6px;text-decoration:none;margin-left:8px;transition:all 0.15s;}
-.nav-cta:hover{background:var(--gold2);}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;margin-left:auto;}
-.hamburger span{width:22px;height:2px;background:#fff;border-radius:2px;}
-.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(13,36,97,0.98);z-index:199;padding:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.mobile-menu.open{display:flex;flex-direction:column;gap:4px;}
-.mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:15px;padding:13px 16px;border-radius:8px;transition:all 0.15s;font-weight:500;}
-.mobile-menu a:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.mobile-menu .mm-live{color:#e63946;font-weight:700;}
+.nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+.nav-wa{background:var(--gold);color:var(--navy);font-size:12px;font-weight:700;padding:7px 13px;border-radius:6px;text-decoration:none;}
 
-/* HERO */
+/* ── MAIN LAYOUT ── */
+.layout{display:flex;height:100vh;padding-top:var(--hdr);}
 
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:0;}
-.btn-planes,.btn-tv{
-  border:none;cursor:pointer;font-family:'Inter',sans-serif;
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--side);min-width:var(--side);
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sb-head{padding:12px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-sw{position:relative;margin-bottom:9px;}
+.sb-si{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;pointer-events:none;}
+.sb-s{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:18px;color:var(--text);padding:8px 12px 8px 32px;font-size:13px;outline:none;font-family:inherit;}
+.sb-s::placeholder{color:var(--text3);}
+.sb-s:focus{border-color:rgba(255,255,255,0.2);}
+.sb-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+.sb-tab{font-size:10px;padding:4px 10px;border-radius:10px;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;transition:all 0.15s;white-space:nowrap;font-family:inherit;}
+.sb-tab:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+.sb-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.sb-n{font-size:10px;color:var(--text3);margin-top:7px;}
+.ch-list{flex:1;overflow-y:auto;}
+.ch-list::-webkit-scrollbar{width:3px;}
+.ch-list::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+.ch-item{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;transition:background 0.12s;position:relative;border-bottom:1px solid rgba(255,255,255,0.03);}
+.ch-item:hover{background:var(--bg3);}
+.ch-item.active{background:var(--bg4);}
+.ch-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 2px 2px 0;}
+.ch-logo{width:40px;height:40px;border-radius:6px;background:var(--bg4);border:1px solid var(--border);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.ch-logo img{width:100%;height:100%;object-fit:contain;}
+.ch-fb{font-size:9px;font-weight:700;color:var(--text3);text-align:center;padding:2px;}
+.ch-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ch-item.active .ch-name{color:#fff;font-weight:600;}
+.ch-num{font-size:10px;color:var(--text3);margin-top:2px;}
+.ch-bd{font-size:9px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 5px;flex-shrink:0;}
+.ch-item.active .ch-bd{color:var(--accent);background:rgba(230,57,70,0.1);border-color:rgba(230,57,70,0.3);}
+
+/* ── PLAYER COLUMN ── */
+.player-col{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+
+/* ── BANNER LAYOUT WRAPPER ── */
+/* The "TV frame" = top-banner + middle-row + bottom-banner */
+.tv-frame{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;
+}
+
+/* Top banner */
+.banner-top{
+  height:var(--banner-h);background:var(--navy);
+  flex-shrink:0;display:flex;align-items:center;overflow:hidden;position:relative;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+/* Middle row: side-banner | video | side-banner */
+.tv-mid{display:flex;flex:1;overflow:hidden;}
+.banner-side{
+  width:var(--banner-side);background:var(--navy);
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+}
+.banner-side.left{border-right:1px solid rgba(255,255,255,0.06);}
+.banner-side.right{border-left:1px solid rgba(255,255,255,0.06);}
+
+/* Bottom banner */
+.banner-bottom{
+  height:var(--banner-h);background:var(--navy);
+  flex-shrink:0;display:flex;align-items:center;overflow:hidden;position:relative;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+/* The actual video area */
+.player-area{
+  flex:1;background:#000;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+video{width:100%;height:100%;object-fit:contain;display:block;}
+
+/* ── BANNER CONTENT ── */
+/* Scrolling ticker for top/bottom */
+.banner-ticker{
+  display:flex;white-space:nowrap;
+  animation:btick 18s linear infinite;
+  align-items:center;gap:0;
+}
+.banner-ticker:hover{animation-play-state:paused;}
+@keyframes btick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.bt-item{
   display:inline-flex;align-items:center;gap:10px;
-  padding:16px 32px;border-radius:10px;font-size:15px;font-weight:700;
-  transition:all 0.2s;letter-spacing:0.3px;
-  min-width:200px;justify-content:center;
+  padding:0 28px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px;
 }
-.btn-planes{
+.bt-item .bt-tag{
   background:var(--gold);color:var(--navy);
-  box-shadow:0 4px 20px rgba(245,158,11,0.4);
+  font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:1.5px;
+  flex-shrink:0;
 }
-.btn-planes:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,158,11,0.5);}
-.btn-planes:active{transform:translateY(0);}
-.btn-tv{
-  background:#e63946;color:#fff;
-  box-shadow:0 4px 20px rgba(230,57,70,0.4);
-  position:relative;overflow:hidden;
+.bt-item .bt-price{color:var(--gold);font-size:18px;font-weight:800;}
+.bt-sep{color:rgba(255,255,255,0.2);font-size:20px;padding:0 8px;}
+
+/* Side banner: vertical rotating cards */
+.side-card{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:10px 8px;
+  gap:6px;opacity:0;transition:opacity 0.5s;pointer-events:none;
+  text-align:center;
 }
-.btn-tv:hover{background:#c1121f;transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,57,70,0.5);}
-.btn-tv:active{transform:translateY(0);}
-.btn-icon{font-size:18px;}
-.btn-icon-live{
-  width:10px;height:10px;border-radius:50%;
-  background:#fff;flex-shrink:0;
-  animation:blink 1.2s infinite;
+.side-card.visible{opacity:1;pointer-events:auto;}
+.side-icon{font-size:28px;}
+.side-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;letter-spacing:0.5px;line-height:1.2;}
+.side-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);line-height:1;}
+.side-sub{font-size:9px;color:rgba(255,255,255,0.45);line-height:1.3;}
+.side-divider{width:30px;height:1px;background:rgba(255,255,255,0.12);}
+.side-cta{
+  background:var(--gold);color:var(--navy);
+  font-size:9px;font-weight:800;padding:4px 8px;border-radius:4px;
+  text-decoration:none;letter-spacing:0.5px;margin-top:2px;
 }
-.btn-arrow{font-size:18px;margin-left:2px;}
+
+/* ── OVERLAYS ── */
+.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:10;}
+.ov.hidden{display:none;}
+#ovWelcome{background:var(--bg);}
+.ov-dots{display:grid;grid-template-columns:repeat(3,14px);grid-template-rows:repeat(3,14px);gap:6px;margin-bottom:8px;}
+.ov-dots span{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.8);}
+.ov-dots span:nth-child(2n){opacity:0.2;}
+.ov-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--text2);letter-spacing:2px;}
+.ov-sub{font-size:13px;color:var(--text3);}
+#ovLoad{background:rgba(0,0,0,0.88);}
+.spin{width:44px;height:44px;}
+.spin svg{width:100%;height:100%;animation:spin 0.9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ov-ln{font-size:14px;color:var(--text2);}
+.ov-lp{font-size:11px;color:var(--text3);}
+#ovError{background:rgba(5,6,14,0.93);}
+.ov-ei{font-size:40px;}
+.ov-et{font-size:16px;color:var(--text2);}
+.ov-em{font-size:12px;color:var(--text3);text-align:center;max-width:260px;line-height:1.6;}
+.btn-retry{background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;}
+
+/* ── PLAYER CONTROLS ── */
+.ctrl-wrap{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,8,0.92));
+  padding:40px 16px 12px;
+  opacity:0;transition:opacity 0.25s;
+  display:flex;flex-direction:column;gap:8px;
+  z-index:20;
+}
+.player-area:hover .ctrl-wrap,
+.player-area.cv .ctrl-wrap{opacity:1;}
+.ctrl-prog{position:relative;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin-bottom:2px;cursor:pointer;}
+.ctrl-pbuf{position:absolute;inset:0;background:rgba(255,255,255,0.22);border-radius:2px;width:0%;}
+.ctrl-pfill{position:absolute;inset:0;background:var(--accent);border-radius:2px;width:0%;}
+.ctrl-row{display:flex;align-items:center;gap:8px;}
+.c-btn{
+  background:none;border:none;color:rgba(255,255,255,0.88);
+  cursor:pointer;font-size:20px;padding:6px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;border-radius:4px;
+  -webkit-user-select:none;user-select:none;
+}
+.c-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
+.c-btn:active{transform:scale(0.92);}
+.c-vol{width:60px;height:3px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,0.25);border-radius:2px;outline:none;cursor:pointer;}
+.c-vol::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:#fff;border-radius:50%;}
+.c-live{font-size:9px;font-weight:700;letter-spacing:2px;background:var(--accent);color:#fff;padding:3px 7px;border-radius:3px;}
+.c-lbl{font-size:12px;font-weight:600;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:2px;}
+.c-right{margin-left:auto;display:flex;gap:5px;align-items:center;}
+.c-qual{font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12);padding:3px 6px;border-radius:3px;}
+
+/* ── INFO BAR ── */
+.info-bar{
+  height:var(--info);background:var(--bg2);border-top:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;
+}
+.ib-lg{width:32px;height:32px;border-radius:5px;background:var(--bg4);border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ib-lg img{width:100%;height:100%;object-fit:contain;}
+.ib-lbl{font-size:9px;color:var(--text3);letter-spacing:1.5px;font-weight:600;}
+.ib-nm{font-size:13px;font-weight:600;color:#fff;margin-top:1px;}
+.ib-st{margin-left:auto;display:flex;gap:14px;align-items:center;}
+.ib-s .v{font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);}
+.ib-s .k{font-size:9px;color:var(--text3);letter-spacing:0.5px;margin-top:1px;}
+.sig{display:flex;align-items:flex-end;gap:2px;height:14px;}
+.sig span{width:3px;border-radius:1px;background:rgba(255,255,255,0.15);transition:background 0.3s;}
+.sig span:nth-child(1){height:4px;}
+.sig span:nth-child(2){height:7px;}
+.sig span:nth-child(3){height:10px;}
+.sig span:nth-child(4){height:14px;}
+.sig.good span{background:var(--accent);}
+.sig.med span:nth-child(-n+3){background:var(--gold);}
+
+/* ── FULLSCREEN overrides ── */
+:fullscreen .layout,
+:-webkit-full-screen .layout{padding-top:0;}
+:fullscreen nav,
+:-webkit-full-screen nav{display:none;}
+:fullscreen .sidebar,
+:-webkit-full-screen .sidebar{display:none;}
+:fullscreen .player-col,
+:-webkit-full-screen .player-col{width:100vw;}
+:fullscreen .tv-frame,
+:-webkit-full-screen .tv-frame{height:100vh;}
+:fullscreen .info-bar,
+:-webkit-full-screen .info-bar{display:none;}
+
+/* ── MOBILE ── */
 @media(max-width:768px){
-  .btn-planes,.btn-tv{
-    width:100%;min-width:0;padding:18px 24px;font-size:16px;
+  :root{
+    --side:100%;--hdr:52px;--info:48px;
+    --banner-h:54px;--banner-side:0px;
   }
-  .hero-btns{flex-direction:column;gap:12px;width:100%;max-width:360px;}
+  .layout{flex-direction:column;}
+
+  /* Sidebar: horizontal strip */
+  .sidebar{
+    width:100%;min-width:100%;height:auto;
+    border-right:none;border-bottom:1px solid var(--border);flex-shrink:0;
+  }
+  .sb-head{padding:8px 10px 7px;}
+  .sb-tabs{gap:4px;}
+  .sb-n{display:none;}
+
+  .ch-list{
+    display:flex;flex-direction:row;
+    overflow-x:auto;overflow-y:hidden;
+    padding:8px 10px 10px;gap:7px;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .ch-list::-webkit-scrollbar{display:none;}
+  .ch-item{
+    flex-direction:column;min-width:76px;width:76px;
+    border-bottom:none;border-radius:10px;padding:9px 5px 8px;
+    align-items:center;border:1px solid var(--border);flex-shrink:0;
+  }
+  .ch-item::before{display:none;}
+  .ch-item.active{border-color:var(--accent);background:rgba(230,57,70,0.1);}
+  .ch-logo{width:44px;height:44px;margin-bottom:6px;}
+  .ch-name{
+    font-size:10px;white-space:normal;text-align:center;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    color:rgba(255,255,255,0.75);line-height:1.3;
+  }
+  .ch-item.active .ch-name{color:#fff;font-weight:600;}
+  .ch-num,.ch-bd{display:none;}
+  .sb-sw{display:none;}
+
+  /* Hide side banners on mobile, keep top/bottom */
+  .banner-side{display:none;}
+
+  /* Player takes all remaining space */
+  .player-area{min-height:180px;}
+
+  /* Controls: bigger touch targets */
+  .c-btn{font-size:22px;padding:8px;}
+
+  /* Nav */
+  nav{padding:0 14px;}
+  .nav-wa{display:none;}
+  .nav-sub{display:none;}
 }
 
-#home{min-height:100vh;padding-top:62px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#0a1f5c 100%);display:flex;align-items:center;position:relative;overflow:hidden;}
-.hero-pattern{position:absolute;inset:0;opacity:0.05;}
-.hero-pattern svg{width:100%;height:100%;}
-.hero-inner{max-width:1200px;margin:0 auto;padding:60px 32px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--sky);font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;letter-spacing:2px;margin-bottom:20px;}
-h1{font-family:'Barlow Condensed',sans-serif;font-size:58px;font-weight:800;color:#fff;line-height:1;margin-bottom:20px;}
-h1 span{color:var(--gold);}
-.hero-desc{font-size:16px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:32px;max-width:440px;}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;} .btn-gold,.btn-outline{min-height:52px;display:flex;align-items:center;justify-content:center;}
-.btn-gold{display:none;}
-
-.btn-outline{display:none;}
-
-.hero-stats{display:flex;gap:36px;margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.1);}
-.hstat .v{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:800;color:#fff;line-height:1;}
-.hstat .v em{color:var(--gold);font-style:normal;}
-.hstat .k{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;margin-top:4px;}
-.hero-tv{position:relative;}
-.tv-frame{background:rgba(0,0,0,0.45);border:2px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;aspect-ratio:16/10;position:relative;}
-.tv-inner{width:100%;height:100%;background:linear-gradient(160deg,#0a1628,#040c18);display:flex;align-items:center;justify-content:center;position:relative;}
-.tv-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:4px 9px;border-radius:3px;letter-spacing:2px;}
-.tv-play{width:60px;height:60px;background:rgba(230,57,70,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;text-decoration:none;transition:transform 0.2s;}
-.tv-play:hover{transform:scale(1.1);}
-.tv-strip{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);padding:8px 12px;display:flex;gap:6px;}
-.tv-chip{width:30px;height:30px;border-radius:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);}
-.badge-gold{position:absolute;top:-14px;right:-14px;background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:7px 13px;border-radius:7px;box-shadow:0 6px 20px rgba(245,158,11,0.4);white-space:nowrap;}
-.badge-dark{position:absolute;bottom:-14px;left:-14px;background:#101828;color:#fff;font-size:11px;font-weight:600;padding:7px 13px;border-radius:7px;border:1px solid rgba(255,255,255,0.15);white-space:nowrap;}
-
-/* TICKER */
-.ticker{background:var(--gold);padding:10px 0;overflow:hidden;}
-.ticker-track{display:flex;animation:scroll 28s linear infinite;white-space:nowrap;}
-.ticker-item{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--navy);padding:0 36px;letter-spacing:1px;}
-.ticker-item::before{content:"●";margin-right:14px;opacity:0.35;}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* SECTIONS */
-section{padding:80px 32px;}
-.inner{max-width:1200px;margin:0 auto;}
-.sec-label{font-size:11px;font-weight:700;color:var(--blue2);letter-spacing:3px;margin-bottom:12px;text-transform:uppercase;}
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:800;color:var(--navy);line-height:1.1;margin-bottom:16px;}
-.sec-title em{color:var(--blue2);font-style:normal;}
-.sec-desc{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;}
-
-/* SERVICES */
-#servicios{background:#f0f4ff;}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
-.svc-card{background:#fff;border-radius:16px;padding:32px 26px;border:1px solid var(--border);transition:all 0.2s;position:relative;overflow:hidden;}
-.svc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue2);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
-.svc-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(13,36,97,0.09);}
-.svc-card:hover::after{transform:scaleX(1);}
-.svc-icon{width:52px;height:52px;background:#f0f4ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
-.svc-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;}
-.svc-desc{font-size:14px;color:var(--text2);line-height:1.65;}
-.svc-list{margin-top:16px;list-style:none;display:flex;flex-direction:column;gap:7px;}
-.svc-list li{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;}
-.svc-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue2);flex-shrink:0;}
-
-/* PLANS */
-#planes{background:#fff;}
-.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
-.plan{border-radius:16px;padding:32px 26px;border:2px solid var(--border);transition:all 0.2s;text-align:center;}
-.plan.featured{border-color:var(--blue2);background:var(--navy);transform:scale(1.04);box-shadow:0 24px 48px rgba(13,36,97,0.22);}
-.plan-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px;}
-.plan-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;color:var(--navy);margin-bottom:6px;}
-.plan.featured .plan-name{color:#fff;}
-.plan-price{font-family:'Barlow Condensed',sans-serif;font-size:54px;font-weight:800;color:var(--navy);line-height:1;margin:14px 0 2px;}
-.plan.featured .plan-price{color:var(--gold);}
-.plan-cur{font-size:18px;font-weight:600;vertical-align:top;margin-top:10px;display:inline-block;}
-.plan-per{font-size:13px;color:var(--text3);margin-bottom:20px;}
-.plan.featured .plan-per{color:rgba(255,255,255,0.45);}
-.plan-feats{list-style:none;text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
-.plan-feats li{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:10px;}
-.plan.featured .plan-feats li{color:rgba(255,255,255,0.75);}
-.plan-feats li::before{content:'✓';width:18px;height:18px;background:var(--blue2);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
-.plan.featured .plan-feats li::before{background:var(--gold);color:var(--navy);}
-.plan-btn{display:block;padding:12px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;text-align:center;transition:all 0.2s;border:2px solid var(--navy);color:var(--navy);}
-.plan-btn:hover{transform:translateY(-2px);}
-.plan-btn.dark{background:var(--navy);color:#fff;}
-.plan-btn.bright{background:var(--gold);color:var(--navy);border-color:var(--gold);}
-
-/* ABOUT */
-#nosotros{background:var(--navy);}
-.nos-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.nos-grid .sec-title{color:#fff;}
-.nos-grid .sec-label{color:var(--sky);}
-.nos-grid .sec-desc{color:rgba(255,255,255,0.6);}
-.nos-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
-.nos-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;}
-.nos-stat .v{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:800;color:var(--gold);line-height:1;}
-.nos-stat .k{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:0.5px;}
-.nos-feats{display:flex;flex-direction:column;gap:22px;}
-.nos-feat{display:flex;gap:16px;align-items:flex-start;}
-.nos-feat-ic{width:44px;height:44px;background:rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.nos-feat-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;}
-.nos-feat-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
-
-/* CONTACT */
-#contacto{background:#f0f4ff;}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:48px;align-items:start;}
-.c-items{display:flex;flex-direction:column;gap:22px;}
-.c-item{display:flex;gap:16px;align-items:flex-start;}
-.c-ic{width:44px;height:44px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.c-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px;}
-.c-val{font-size:14px;color:var(--text2);}
-.c-val a{color:var(--blue2);text-decoration:none;}
-.contact-form{background:#fff;border-radius:16px;padding:32px;border:1px solid var(--border);}
-.contact-form h3{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:20px;}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.fg label{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.5px;}
-.fg input,.fg textarea,.fg select{border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit;background:#fff;transition:border-color 0.15s;}
-.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue2);}
-.fg textarea{resize:vertical;min-height:95px;}
-.form-submit{width:100%;background:var(--navy);color:#fff;border:none;padding:13px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s;}
-.form-submit:hover{background:var(--navy2);}
-
-/* FOOTER */
-footer{background:#080f24;padding:40px 32px 24px;}
-.footer-in{max-width:1200px;margin:0 auto;}
-.footer-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:3px;}
-.footer-tag{font-size:11px;color:rgba(255,255,255,0.25);margin-top:3px;}
-.footer-links{display:flex;gap:22px;flex-wrap:wrap;}
-.footer-links a{color:rgba(255,255,255,0.35);text-decoration:none;font-size:13px;transition:color 0.15s;}
-.footer-links a:hover{color:#fff;}
-.footer-bottom{display:flex;justify-content:space-between;padding-top:20px;font-size:12px;color:rgba(255,255,255,0.2);}
-
-/* RESPONSIVE */
-@media(max-width:1024px){.svc-grid,.plan-grid{grid-template-columns:1fr 1fr;}.plan.featured{transform:none;}}
+#tvFrame:fullscreen{display:flex;flex-direction:column;width:100vw;height:100vh;background:#000;}
+#tvFrame:-webkit-full-screen{display:flex;flex-direction:column;width:100vw;height:100vh;background:#000;}
+#tvFrame:fullscreen .banner-top,#tvFrame:-webkit-full-screen .banner-top{display:flex !important;height:50px !important;flex-shrink:0;}
+#tvFrame:fullscreen .banner-bottom,#tvFrame:-webkit-full-screen .banner-bottom{display:flex !important;height:50px !important;flex-shrink:0;}
+#tvFrame:fullscreen .tv-mid,#tvFrame:-webkit-full-screen .tv-mid{flex:1 !important;display:flex !important;}
+#tvFrame:fullscreen .banner-side,#tvFrame:-webkit-full-screen .banner-side{display:flex !important;width:80px !important;}
+#tvFrame:fullscreen .player-area,#tvFrame:-webkit-full-screen .player-area{flex:1 !important;}
 @media(max-width:768px){
-  nav{padding:0 16px;}
-  .nav-links{display:none;}
-  .hamburger{display:flex;}
-  .hero-inner{grid-template-columns:1fr;gap:0;padding:40px 20px 50px;}
-  h1{font-size:42px;}
-  .hero-tv{display:none;}
-  .hero-stats{gap:20px;}
-  .hstat .v{font-size:30px;}
-  section{padding:52px 20px;}
-  .sec-title{font-size:32px;}
-  .svc-grid,.plan-grid,.nos-grid,.contact-grid{grid-template-columns:1fr;}
-  .plan.featured{transform:none;}
-  .fr{grid-template-columns:1fr;}
-  .nos-stats{grid-template-columns:1fr 1fr;}
-  .footer-top{flex-direction:column;gap:20px;text-align:center;}
-  .footer-links{justify-content:center;}
-  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+  #tvFrame:fullscreen .banner-side,#tvFrame:-webkit-full-screen .banner-side{display:none !important;}
+  #tvFrame:fullscreen .banner-top,#tvFrame:-webkit-full-screen .banner-top{height:36px !important;}
+  #tvFrame:fullscreen .banner-bottom,#tvFrame:-webkit-full-screen .banner-bottom{height:36px !important;}
 }
 </style>
 </head>
@@ -234,237 +320,379 @@ footer{background:#080f24;padding:40px 32px 24px;}
 <nav>
   <a href="index.html" class="nav-logo">
     <div class="nav-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div><div class="nav-brand">CETEM</div><div class="nav-sub">FIBRA ÓPTICA & TV DIGITAL</div></div>
+    <div><div class="nav-brand">CETEM</div><div class="nav-sub">TV EN VIVO</div></div>
   </a>
-  <div class="nav-links">
-    <a href="#servicios" class="nav-link">Servicios</a>
-    <a href="#planes" class="nav-link">Planes</a>
-    <a href="#nosotros" class="nav-link">Nosotros</a>
-    <a href="#contacto" class="nav-link">Contacto</a>
-    <a href="tv.html" class="nav-live"><div class="live-dot"></div>TV EN VIVO</a>
-    <a href="https://wa.me/50257155661" class="nav-cta" target="_blank">&#128222; 5715-5661</a>
+  <div class="nav-r">
+    <div class="nav-live"><div class="live-dot"></div>EN VIVO</div>
+    <a href="index.html" class="nav-back">&#8592; Sitio web</a>
+    <a href="https://wa.me/50257155661" class="nav-wa" target="_blank">&#128222; 5715-5661</a>
   </div>
-  <div class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></div>
 </nav>
-<div class="mobile-menu" id="mm">
-  <a href="#servicios" onclick="document.getElementById('mm').classList.remove('open')">Servicios</a>
-  <a href="#planes" onclick="document.getElementById('mm').classList.remove('open')">Planes</a>
-  <a href="#nosotros" onclick="document.getElementById('mm').classList.remove('open')">Nosotros</a>
-  <a href="#contacto" onclick="document.getElementById('mm').classList.remove('open')">Contacto</a>
-  <a href="tv.html" class="mm-live">&#128250; TV en Vivo</a>
-  <a href="https://wa.me/50257155661" target="_blank">&#128222; 5715-5661</a>
-</div>
 
-<!-- HERO -->
-<section id="home">
-  <div class="hero-pattern">
-    <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
-      <defs><pattern id="p" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="white"/></pattern></defs>
-      <rect width="1200" height="600" fill="url(#p)"/>
-    </svg>
-  </div>
-  <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow">&#128308;&nbsp; Servicio disponible ahora</div>
-      <h1>Internet y TV<br><span>para tu hogar</span></h1>
-      <p class="hero-desc">Conectividad de fibra óptica de alto desempeño con televisión digital. Hasta 400 Megas residencial con instalación gratuita.</p>
-      <div class="hero-btns">
-        <button class="btn-planes" onclick="window.location.hash='servicios'">
-          <span class="btn-icon">&#9889;</span>
-          <span>Servicios CETEM</span>
-        </button>
-        <button class="btn-tv" onclick="window.location.href='tv.html'">
-          <span class="btn-icon-live"></span>
-          <span>Ver TV en Vivo</span>
-          <span class="btn-arrow">&#8594;</span>
-        </button>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-sw">
+        <span class="sb-si">&#128269;</span>
+        <input class="sb-s" id="sbS" type="text" placeholder="Buscar canal...">
       </div>
-      <div class="hero-stats">
-        <div class="hstat"><div class="v">400<em>M</em></div><div class="k">MEGAS MÁXIMOS</div></div>
-        <div class="hstat"><div class="v">166<em>+</em></div><div class="k">CANALES TV</div></div>
-        <div class="hstat"><div class="v">24<em>/7</em></div><div class="k">SOPORTE</div></div>
+      <div class="sb-tabs" id="sbTabs">
+        <button class="sb-tab active" data-f="all">Todos</button>
+        <button class="sb-tab" data-f="ani">Animación</button>
+        <button class="sb-tab" data-f="kid">Infantil</button>
       </div>
+      <div class="sb-n" id="sbN">55 canales</div>
     </div>
-    <div class="hero-tv">
-      <div style="position:relative;padding:18px 22px 0">
-        <div class="badge-gold">&#9989; Instalación Gratis</div>
-        <div class="tv-frame">
-          <div class="tv-inner">
-            <div class="tv-badge">EN VIVO</div>
-            <a href="tv.html" class="tv-play">&#9654;</a>
-            <div class="tv-strip">
-              <div class="tv-chip"></div><div class="tv-chip"></div>
-              <div class="tv-chip"></div><div class="tv-chip"></div>
-              <div class="tv-chip"></div>
+    <div class="ch-list" id="chList"></div>
+  </aside>
+
+  <!-- PLAYER COLUMN -->
+  <div class="player-col" id="playerCol">
+    <div class="tv-frame" id="tvFrame">
+
+      <!-- TOP BANNER -->
+      <div class="banner-top">
+        <div class="banner-ticker" id="topTicker">
+          <span class="bt-item"><span class="bt-tag">OFERTA</span>&nbsp; Internet <span class="bt-price">400M</span> &nbsp;— Solo Q350/mes</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">GRATIS</span>&nbsp; Instalación completamente gratuita en tu hogar</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">NUEVO</span>&nbsp; TV Digital · 166+ canales en HD</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item">&#128222;&nbsp; Contratar: <span class="bt-price">5715-5661</span></span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">CETEM</span>&nbsp; Fibra Óptica · San Antonio Sac. S.M.</span>
+          <span class="bt-sep">|</span>
+          <!-- duplicate for seamless loop -->
+          <span class="bt-item"><span class="bt-tag">OFERTA</span>&nbsp; Internet <span class="bt-price">400M</span> &nbsp;— Solo Q350/mes</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">GRATIS</span>&nbsp; Instalación completamente gratuita en tu hogar</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">NUEVO</span>&nbsp; TV Digital · 166+ canales en HD</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item">&#128222;&nbsp; Contratar: <span class="bt-price">5715-5661</span></span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">CETEM</span>&nbsp; Fibra Óptica · San Antonio Sac. S.M.</span>
+          <span class="bt-sep">|</span>
+        </div>
+      </div>
+
+      <!-- MIDDLE ROW -->
+      <div class="tv-mid">
+
+        <!-- LEFT BANNER -->
+        <div class="banner-side left" id="bannerL">
+          <div class="side-card visible" id="sc0">
+            <div class="side-icon">&#9889;</div>
+            <div class="side-title">Fibra<br>Óptica</div>
+            <div class="side-divider"></div>
+            <div class="side-val">400M</div>
+            <div class="side-sub">velocidad<br>máxima</div>
+            <a href="index.html#planes" class="side-cta">Ver plan</a>
+          </div>
+          <div class="side-card" id="sc1">
+            <div class="side-icon">&#128222;</div>
+            <div class="side-title">Llámanos</div>
+            <div class="side-divider"></div>
+            <div class="side-val" style="font-size:14px">5715<br>5661</div>
+            <div class="side-sub">WhatsApp<br>directo</div>
+          </div>
+        </div>
+
+        <!-- VIDEO PLAYER -->
+        <div class="player-area" id="playerArea">
+          <video id="video" playsinline webkit-playsinline></video>
+
+          <!-- OVERLAYS -->
+          <div class="ov" id="ovWelcome">
+            <div class="ov-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="ov-title">CETEM TV</div>
+            <div class="ov-sub">Selecciona un canal para comenzar</div>
+          </div>
+          <div class="ov hidden" id="ovLoad">
+            <div class="spin"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.08)" stroke-width="4"/><path d="M22 4 A18 18 0 0 1 40 22" stroke="#e63946" stroke-width="4" stroke-linecap="round"/></svg></div>
+            <div class="ov-ln" id="ovLN">Conectando...</div>
+            <div class="ov-lp" id="ovLP"></div>
+          </div>
+          <div class="ov hidden" id="ovError">
+            <div class="ov-ei">&#9888;&#65039;</div>
+            <div class="ov-et">Canal no disponible</div>
+            <div class="ov-em" id="ovEM">No se pudo establecer la conexión.</div>
+            <button class="btn-retry" onclick="retry()">&#8635; Reintentar</button>
+          </div>
+
+          <!-- CONTROLS -->
+          <div class="ctrl-wrap" id="ctrlWrap">
+            <div class="ctrl-prog">
+              <div class="ctrl-pbuf" id="ctrlBuf"></div>
+              <div class="ctrl-pfill" id="ctrlProg"></div>
+            </div>
+            <div class="ctrl-row">
+              <button class="c-btn" id="btnPlay" onclick="togglePlay()" aria-label="Play/Pausa">&#9654;</button>
+              <button class="c-btn" id="btnMute" onclick="toggleMute()" aria-label="Silencio">&#128266;</button>
+              <input class="c-vol" id="volSl" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volumen">
+              <span class="c-live">EN VIVO</span>
+              <span class="c-lbl" id="cLbl">—</span>
+              <div class="c-right">
+                <span class="c-qual" id="cQual">LIVE</span>
+                <button class="c-btn" id="btnFS" aria-label="Pantalla completa">&#x26F6;</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="badge-dark">&#9889; Fibra Óptica</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <span class="ticker-item">Internet Fibra Óptica</span>
-    <span class="ticker-item">TV Digital 166+ Canales</span>
-    <span class="ticker-item">Hasta 400 Megas</span>
-    <span class="ticker-item">Instalación Gratis</span>
-    <span class="ticker-item">Soporte 24/7</span>
-    <span class="ticker-item">San Antonio Sac. S.M.</span>
-    <span class="ticker-item">WhatsApp 5715-5661</span>
-    <span class="ticker-item">Internet Fibra Óptica</span>
-    <span class="ticker-item">TV Digital 166+ Canales</span>
-    <span class="ticker-item">Hasta 400 Megas</span>
-    <span class="ticker-item">Instalación Gratis</span>
-    <span class="ticker-item">Soporte 24/7</span>
-    <span class="ticker-item">San Antonio Sac. S.M.</span>
-    <span class="ticker-item">WhatsApp 5715-5661</span>
-  </div>
-</div>
+        <!-- RIGHT BANNER -->
+        <div class="banner-side right" id="bannerR">
+          <div class="side-card visible" id="sc2">
+            <div class="side-icon">&#128250;</div>
+            <div class="side-title">TV<br>Digital</div>
+            <div class="side-divider"></div>
+            <div class="side-val">166+</div>
+            <div class="side-sub">canales<br>en HD</div>
+            <a href="index.html#servicios" class="side-cta">Ver más</a>
+          </div>
+          <div class="side-card" id="sc3">
+            <div class="side-icon">&#9989;</div>
+            <div class="side-title">Inst.<br>Gratis</div>
+            <div class="side-divider"></div>
+            <div class="side-val" style="font-size:13px;color:#fff">Sin<br>costo</div>
+            <div class="side-sub">sin contrato<br>permanencia</div>
+          </div>
+        </div>
 
-<!-- SERVICIOS -->
-<section id="servicios">
-  <div class="inner">
-    <div class="sec-label">Lo que ofrecemos</div>
-    <h2 class="sec-title">Servicios <em>CETEM</em></h2>
-    <p class="sec-desc">Tecnología de fibra óptica para llevar la mejor conectividad y entretenimiento a tu hogar.</p>
-    <div class="svc-grid">
-      <div class="svc-card">
-        <div class="svc-icon">&#9889;</div>
-        <div class="svc-title">Internet Fibra Óptica</div>
-        <div class="svc-desc">Conexión de alta velocidad con tecnología de fibra para máximo rendimiento en tu hogar u oficina.</div>
-        <ul class="svc-list"><li>Hasta 400 Megas residencial</li><li>Latencia ultra baja</li><li>Sin interrupciones</li><li>Router WiFi incluido</li></ul>
-      </div>
-      <div class="svc-card">
-        <div class="svc-icon">&#128250;</div>
-        <div class="svc-title">TV Digital</div>
-        <div class="svc-desc">Más de 166 canales en alta definición transmitidos por fibra óptica con calidad superior.</div>
-        <ul class="svc-list"><li>166+ canales en HD</li><li>Nacionales e internacionales</li><li>Deportes, películas, noticias</li><li>TV desde cualquier dispositivo</li></ul>
-      </div>
-      <div class="svc-card">
-        <div class="svc-icon">&#128736;</div>
-        <div class="svc-title">Soporte Técnico</div>
-        <div class="svc-desc">Equipo técnico especializado disponible para resolver cualquier inconveniente rápidamente.</div>
-        <ul class="svc-list"><li>Atención 24/7</li><li>Soporte en sitio</li><li>WhatsApp directo</li><li>Respuesta rápida garantizada</li></ul>
-      </div>
-    </div>
-  </div>
-</section>
+      </div><!-- /tv-mid -->
 
-<!-- PLANES -->
-<section id="planes">
-  <div class="inner">
-    <div class="sec-label">Elige tu plan</div>
-    <h2 class="sec-title">Planes de <em>Internet</em></h2>
-    <p class="sec-desc">Todos los planes incluyen instalación gratuita y soporte técnico. Sin contratos de permanencia.</p>
-    <div class="plan-grid">
-      <div class="plan">
-        <div class="plan-name">Básico</div>
-        <div class="plan-price"><span class="plan-cur">Q</span>150</div>
-        <div class="plan-per">por mes</div>
-        <ul class="plan-feats"><li>50 Megas de velocidad</li><li>WiFi incluido</li><li>TV Digital básica</li><li>Instalación gratis</li></ul>
-        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Básico de 50 Megas" class="plan-btn dark" target="_blank">Contratar plan</a>
-      </div>
-      <div class="plan featured">
-        <div class="plan-badge">MÁS POPULAR</div>
-        <div class="plan-name">Estándar</div>
-        <div class="plan-price"><span class="plan-cur">Q</span>250</div>
-        <div class="plan-per">por mes</div>
-        <ul class="plan-feats"><li>200 Megas de velocidad</li><li>WiFi de alta potencia</li><li>TV Digital completa</li><li>Instalación gratis</li><li>Soporte prioritario</li></ul>
-        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Estándar de 200 Megas" class="plan-btn bright" target="_blank">Contratar plan</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Premium</div>
-        <div class="plan-price"><span class="plan-cur">Q</span>350</div>
-        <div class="plan-per">por mes</div>
-        <ul class="plan-feats"><li>400 Megas de velocidad</li><li>WiFi empresarial</li><li>TV Digital premium</li><li>Instalación gratis</li><li>Soporte 24/7 dedicado</li><li>IP fija disponible</li></ul>
-        <a href="https://wa.me/50257155661?text=Hola, me interesa el plan Premium de 400 Megas" class="plan-btn dark" target="_blank">Contratar plan</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NOSOTROS -->
-<section id="nosotros">
-  <div class="inner">
-    <div class="nos-grid">
-      <div>
-        <div class="sec-label">Quiénes somos</div>
-        <h2 class="sec-title">Conectando <span style="color:var(--gold)">comunidades</span></h2>
-        <p class="sec-desc">CETEM es una empresa guatemalteca especializada en llevar internet de fibra óptica y televisión digital a hogares y negocios de San Antonio Sacatepéquez y la región.</p>
-        <div class="nos-stats">
-          <div class="nos-stat"><div class="v">400M</div><div class="k">VELOCIDAD MÁXIMA</div></div>
-          <div class="nos-stat"><div class="v">166+</div><div class="k">CANALES TV</div></div>
-          <div class="nos-stat"><div class="v">24/7</div><div class="k">SOPORTE</div></div>
-          <div class="nos-stat"><div class="v">100%</div><div class="k">FIBRA ÓPTICA</div></div>
+      <!-- BOTTOM BANNER -->
+      <div class="banner-bottom">
+        <div class="banner-ticker" id="botTicker" style="animation-direction:reverse;animation-duration:22s;">
+          <span class="bt-item"><span class="bt-tag">BÁSICO</span>&nbsp; 50 Megas — Q150/mes · Instalación gratis</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">ESTÁNDAR</span>&nbsp; 200 Megas — Q250/mes · El más popular</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">PREMIUM</span>&nbsp; 400 Megas — Q350/mes · Máxima velocidad</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item">&#128205;&nbsp; Media cuadra de la Caseta · San Antonio Sac. S.M.</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">BÁSICO</span>&nbsp; 50 Megas — Q150/mes · Instalación gratis</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">ESTÁNDAR</span>&nbsp; 200 Megas — Q250/mes · El más popular</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item"><span class="bt-tag">PREMIUM</span>&nbsp; 400 Megas — Q350/mes · Máxima velocidad</span>
+          <span class="bt-sep">|</span>
+          <span class="bt-item">&#128205;&nbsp; Media cuadra de la Caseta · San Antonio Sac. S.M.</span>
+          <span class="bt-sep">|</span>
         </div>
       </div>
-      <div class="nos-feats">
-        <div class="nos-feat"><div class="nos-feat-ic">&#127981;</div><div><div class="nos-feat-title">Tecnología de punta</div><div class="nos-feat-desc">Infraestructura 100% fibra óptica para garantizar la mayor velocidad y estabilidad.</div></div></div>
-        <div class="nos-feat"><div class="nos-feat-ic">&#128205;</div><div><div class="nos-feat-title">Cobertura local</div><div class="nos-feat-desc">Oficinas media cuadra abajo de la Caseta San Antonio Sac. S.M., cerca de ti.</div></div></div>
-        <div class="nos-feat"><div class="nos-feat-ic">&#128091;</div><div><div class="nos-feat-title">Atención personalizada</div><div class="nos-feat-desc">Contacto directo por WhatsApp. Equipo comprometido con la satisfacción del cliente.</div></div></div>
-        <div class="nos-feat"><div class="nos-feat-ic">&#9989;</div><div><div class="nos-feat-title">Sin contratos de permanencia</div><div class="nos-feat-desc">Nuestro servicio se mantiene por calidad, no por obligaciones contractuales.</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- CONTACTO -->
-<section id="contacto">
-  <div class="inner">
-    <div class="sec-label">Estamos aquí</div>
-    <h2 class="sec-title">Contáctanos</h2>
-    <p class="sec-desc">¿Listo para conectarte? Escríbenos por WhatsApp o visítanos en nuestras oficinas.</p>
-    <div class="contact-grid">
-      <div class="c-items">
-        <div class="c-item"><div class="c-ic">&#128222;</div><div><div class="c-title">WhatsApp</div><div class="c-val"><a href="https://wa.me/50257155661" target="_blank">5715-5661</a></div></div></div>
-        <div class="c-item"><div class="c-ic">&#128205;</div><div><div class="c-title">Ubicación</div><div class="c-val">Media cuadra abajo de la Caseta<br>San Antonio Sac. S.M., Guatemala</div></div></div>
-        <div class="c-item"><div class="c-ic">&#128336;</div><div><div class="c-title">Horario de atención</div><div class="c-val">Lunes a Sábado: 8:00 AM – 6:00 PM<br>Soporte técnico: 24/7</div></div></div>
-        <div class="c-item"><div class="c-ic">&#128250;</div><div><div class="c-title">TV Digital</div><div class="c-val">166+ canales disponibles en vivo<br><a href="tv.html">Ver TV ahora →</a></div></div></div>
-      </div>
-      <div class="contact-form">
-        <h3>Solicitar información</h3>
-        <div class="fr">
-          <div class="fg"><label>NOMBRE</label><input type="text" id="fname" placeholder="Tu nombre"></div>
-          <div class="fg"><label>TELÉFONO</label><input type="tel" id="fphone" placeholder="Tu número"></div>
-        </div>
-        <div class="fg"><label>SERVICIO DE INTERÉS</label><select id="fsvc"><option>Internet Fibra Óptica</option><option>TV Digital</option><option>Paquete Internet + TV</option><option>Soporte técnico</option></select></div>
-        <div class="fg"><label>MENSAJE</label><textarea id="fmsg" placeholder="¿En qué podemos ayudarte?"></textarea></div>
-        <button class="form-submit" onclick="sendWA()">Enviar por WhatsApp &#128222;</button>
-      </div>
-    </div>
-  </div>
-</section>
+    </div><!-- /tv-frame -->
 
-<footer>
-  <div class="footer-in">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">CETEM</div>
-        <div class="footer-tag">Internet y TV Digital · San Antonio Sac. S.M., Guatemala</div>
-      </div>
-      <div class="footer-links">
-        <a href="index.html">Inicio</a><a href="#servicios">Servicios</a><a href="#planes">Planes</a>
-        <a href="#nosotros">Nosotros</a><a href="#contacto">Contacto</a><a href="tv.html">TV en Vivo</a>
+    <!-- INFO BAR -->
+    <div class="info-bar">
+      <div class="ib-lg"><img id="ibLg" src="" alt="" style="display:none"><span id="ibFb" style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.3)">TV</span></div>
+      <div><div class="ib-lbl">REPRODUCIENDO</div><div class="ib-nm" id="ibNm">Selecciona un canal</div></div>
+      <div class="ib-st">
+        <div class="ib-s"><div class="v" id="ibCh">—/55</div><div class="k">CANAL</div></div>
+        <div class="ib-s"><div class="v" id="ibBuf">—</div><div class="k">BUFFER</div></div>
+        <div class="sig" id="ibSig"><span></span><span></span><span></span><span></span></div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <div>© 2024 CETEM · Todos los derechos reservados</div>
-      <div>WhatsApp: 5715-5661 · San Antonio Sac. S.M., Guatemala</div>
-    </div>
-  </div>
-</footer>
+  </div><!-- /player-col -->
+</div><!-- /layout -->
 
 <script>
-function sendWA(){
-  const n=document.getElementById('fname').value||'Cliente';
-  const s=document.getElementById('fsvc').value;
-  const m=document.getElementById('fmsg').value||'';
-  window.open('https://wa.me/50257155661?text='+encodeURIComponent('Hola CETEM, soy '+n+'. Me interesa: '+s+'. '+m),'_blank');
+const CH=[{"name": "3ABN Kids Network", "logo": "https://i.imgur.com/z3npqO1.png", "url": "https://3abn.bozztv.com/3abn2/Kids_live/smil:Kids_live.smil/playlist.m3u8"}, {"name": "ADN TV+ (720p)", "logo": "https://i.imgur.com/HQZQyWt.png", "url": "https://d3b73b34o7cvkq.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-gz2sgqzp076kf/adn.m3u8"}, {"name": "Ani-Blast (720p)", "logo": "https://www.medialink.com.hk/img/anione/AOYC1.png", "url": "https://amg19223-amg19223c9-amgplt0019.playout.now3.amagi.tv/playlist/amg19223-amg19223c9-amgplt0019/playlist.m3u8"}, {"name": "Animation+ (1080p) [Geo-blocked]", "logo": "https://i.imgur.com/OIFK6JB.png", "url": "https://pb-ioe9d0fpkd6pp.akamaized.net/playlist.m3u8"}, {"name": "Animax Asia India (1080p) [Geo-blocked]", "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/Animax.png", "url": "https://amg02159-kcglobal-amg02159c1-samsung-in-521.playouts.now.amagi.tv/playlist/amg02159-kcglobal-animax-samsungin/playlist.m3u8"}, {"name": "Anime Vision (1080p)", "logo": "https://i.imgur.com/pUpKznl.png", "url": "https://d1ujfw1zyymzyd.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-a6fukwkbxmex8/live/fast-channel-animevision-64527ec0/fast-channel-animevision-64527ec0.m3u8"}, {"name": "Anime Vision Classics (1080p)", "logo": "https://i.imgur.com/mTaiEE1.png", "url": "https://d82pyvmcw2kdc.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-swfivzrzwamaq/live/fast-channel-animevisionclassics-efc8dc6d/fast-channel-animevisionclassics-efc8dc6d.m3u8"}, {"name": "ANIME x HIDIVE (720p) [Geo-blocked]", "logo": "https://i.imgur.com/v0BlxCa.png", "url": "https://d3f088nnrrvkwf.cloudfront.net/v1/amc_anime_x_hidive_1/samsungheadend_us/latest/main/hls/playlist.m3u8"}, {"name": "Anime Zone TV (480p)", "logo": "https://i.imgur.com/AHaXlCh.png", "url": "http://animezonetv.net/hls/stream.m3u8"}, {"name": "Aniplus Asia (720p)", "logo": "https://i.imgur.com/Im3MePy.png", "url": "https://amg18481-amg18481c1-amgplt0352.playout.now3.amagi.tv/playlist/amg18481-amg18481c1-amgplt0352/playlist.m3u8"}, {"name": "Banijay Mr Bean Animé (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c31-rakuten-fr-3991.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanfrcc-rakutenfr/playlist.m3u8"}, {"name": "BBC Four/CBeebies (1080p) [Geo-Blocked]", "logo": "https://i.imgur.com/aH0PCPy.png", "url": "https://viamotionhsi.netplus.ch/live/eds/bbc4cbeebies/browser-HLS8/bbc4cbeebies.m3u8"}, {"name": "BBC Three/CBBC (1080p) [Geo-Blocked]", "logo": "https://i.imgur.com/CGXC5fp.png", "url": "https://viamotionhsi.netplus.ch/live/eds/bbc3cbbc/browser-HLS8/bbc3cbbc.m3u8"}, {"name": "Blues TV", "logo": "https://i.imgur.com/px0CSti.png", "url": "https://2-fss-2.streamhoster.com/pl_138/205510-3094608-1/playlist.m3u8"}, {"name": "Disney Jr. (1080p) [Geo-blocked]", "logo": "https://www.dsmart.com.tr/api/v1/public/images/kanallar/disneyjr.png", "url": "https://saran-live.ercdn.net/disneyjunior/index.m3u8"}, {"name": "Disney Jr. Latin America South", "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/2024_Disney_Jr._Logo.svg", "url": "http://tr.live.clarovtrcdn.vtrplay.com/disneyjrhdchi/vxfmt=dp/playlist.m3u8?device_profile=STB_HLS_VCAS_LIVE_HD"}, {"name": "DreikoTv (720p) [Not 24/7]", "logo": "https://i.imgur.com/k8U0e0b.png", "url": "https://cloudvideo.servers10.com:8081/8138/index.m3u8"}, {"name": "EnerGeek (720p) [Not 24/7]", "logo": "https://cdn.energeek.cl/logos/EG-Retro-2025_pfp.png", "url": "https://backend.energeek.cl/webtv/egretroweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "EnerGeek Fan (1080p)", "logo": "https://cdn.energeek.cl/logos/EG-Fan-2025_pfp.png", "url": "https://backend.energeek.cl/webtv/egfanweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "Extrema Kids TV [Not 24/7]", "logo": "https://www.vivalivetv.com/public/files/shows/0/1/3027-294x165-FFFFFF.jpg", "url": "https://627bb251f23c7.streamlock.net:444/ExtremaKids/ExtremaKids/playlist.m3u8"}, {"name": "FAN (1080p)", "logo": "https://i.imgur.com/mDeTbaF.png", "url": "http://31.148.48.15/Fan/index.m3u8"}, {"name": "FilmRise Anime (720p)", "logo": "https://i.imgur.com/3wqeGXM.png", "url": "https://dvu7aia8rjlfm.cloudfront.net/master.m3u8"}, {"name": "Geekdot (720p)", "logo": "https://i.imgur.com/jML1u4O.png", "url": "https://stream.ichibantv.com:3764/hybrid/play.m3u8"}, {"name": "Gong (1080p)", "logo": "https://i.imgur.com/lA9UFMG.png", "url": "https://amg01596-gongnetworks-gong-ono-vh5f2.amagi.tv/1080p-vtt/index.m3u8"}, {"name": "Gooder Nation Channel 32 (720p) [Not 24/7]", "logo": "", "url": "https://ssh101stream.ssh101.com/akamaissh101/ssh101/channel32/playlist.m3u8"}, {"name": "Japanim TV (1080p)", "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b97e19f-4243-4d48-b794-ff8cf54d795f-profile_image-300x300.png", "url": "https://foxkidstv.be:3369/stream/play.m3u8"}, {"name": "Jiangxi Children's Channel", "logo": "https://www.tvchinese.net/uploads/tv/jxtv6.jpg", "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv6.m3u8"}, {"name": "Kanade (1080p)", "logo": "https://static.kanade.cl/assets/img/profilepic_512px.png", "url": "https://backend.energeek.cl/webtv/kanadeweb/index.m3u8?token=ZZDemoIPTVGH"}, {"name": "Kuriakos Kids (1080p)", "logo": "https://i.imgur.com/SRX6EPY.png", "url": "https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8"}, {"name": "Magic Kids (486p)", "logo": "https://i.imgur.com/CMImqQY.png", "url": "https://magicstream.ddns.net/magicstream/stream.m3u8"}, {"name": "MCN6 Music Channel (1080p) [Not 24/7]", "logo": "https://i.imgur.com/j6IiysJ.png", "url": "https://d18fcxaqfnwjhj.cloudfront.net/CDN_Ingest/MCN6_MUSIC.smil/Playlist.m3u8"}, {"name": "Mr. Bean Animated (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c23-samsung-au-4110.playouts.now.amagi.tv/playlist.m3u8"}, {"name": "Mr. Bean Anime Italy (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c29-rakuten-it-3989.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanitcc-rakutenit/playlist.m3u8"}, {"name": "Mr. Bean Anime Spain (1080p)", "logo": "https://static.wikia.nocookie.net/logopedia/images/2/25/Mr._Bean_Animated_Series_stacked_logo.png", "url": "https://amg00627-amg00627c30-rakuten-es-3990.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanescc-rakutenes/playlist.m3u8"}, {"name": "Multimania (Latvia) (576p)", "logo": "https://i.imgur.com/J9Lwc0T.png", "url": "https://void.greenhosting.ru/Multimania_Mpeg4/index.m3u8"}, {"name": "Naruto (1080p)", "logo": "https://i.imgur.com/M8X3Kvc.png", "url": "https://d21vn5eki5qsdi.cloudfront.net/playlist.m3u8"}, {"name": "Nickelodeon (576p)", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Nickelodeon_2023_logo_%28outline%29.svg/960px-Nickelodeon_2023_logo_%28outline%29.svg.png", "url": "http://195.64.140.147:10121/121"}, {"name": "NickOnline (576p)", "logo": "https://x1co.com.br/logo.png", "url": "https://x1co.com.br/hls/stream.m3u8"}, {"name": "NickToons Brasil (480p)", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nicktoons_logo_%282023%29.svg/330px-Nicktoons_logo_%282023%29.svg.png", "url": "https://stmv2.srvif.com/nicktoons/nicktoons/playlist.m3u8"}, {"name": "NickWeb (720p)", "logo": "https://i.ibb.co/Qvxbvk9B/20260422-174151.png", "url": "https://vs20.live.opencaster.com/nickelodeonbrasil_68f1743d/index.m3u8"}, {"name": "Pingviin (576p)", "logo": "https://i.imgur.com/b6xupqO.png", "url": "https://void.greenhosting.ru/PingviinEE_Mpeg4/index.m3u8"}, {"name": "Placid (1080p) [Not 24/7]", "logo": "https://static.wikitide.net/indietvwiki/0/03/Placid_(2026).svg", "url": "https://toy.vcdn.fyi/placid/index.m3u8"}, {"name": "Pro100TV (576p)", "logo": "https://i.imgur.com/YfQEflM.png", "url": "https://sirius.greenhosting.ru/Pro100tvRu/video.m3u8"}, {"name": "RetroCrush (1080p)", "logo": "https://i.imgur.com/M40b4YI.png", "url": "https://linear-899.frequency.stream/dist/cineverse/899/hls/master/playlist.m3u8"}, {"name": "Slime (576p) [Not 24/7]", "logo": "https://x1co.com.br/slimelogo.png", "url": "https://slime.x1co.com.br/hls/stream.m3u8"}, {"name": "Sony Yay! (1080p) [Geo-blocked]", "logo": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_YAY/images/LOGO_HD/image.png", "url": "https://sl.vodep39240327.workers.dev/channel/SONY%20YAY.m3u8"}, {"name": "SX3 (1080p) [Geo-blocked]", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/SX3_logo.svg/960px-SX3_logo.svg.png", "url": "https://directes-tv-cat.3catdirectes.cat/live-content/super3-hls/master.m3u8"}, {"name": "Tiguerito TV (720p) [Not 24/7]", "logo": "https://dominicanchannels.com/wp-content/uploads/tigueritos-tv.jpg", "url": "https://ss2.tvrdomi.com:1936/tigueritostv/tigueritostv/playlist.m3u8"}, {"name": "Toonami Aftermath East (480p)", "logo": "https://i.imgur.com/aSjhZK7.png", "url": "http://api.toonamiaftermath.com:3000/est/playlist.m3u8"}, {"name": "Yu-Gi-Oh! (1080p)", "logo": "https://i.imgur.com/Tl6aW2u.png", "url": "https://amg01796-amg01796c19-rakuten-gb-7486.playouts.now.amagi.tv/playlist/amg01796-fastmediafast-yugioh2en-rakutengb/playlist.m3u8"}, {"name": "Мультимания (576p)", "logo": "https://i.imgur.com/abh8ZBA.png", "url": "https://sirius.greenhosting.ru/MultimaniaRu/tracks-v1a1/mono.m3u8"}, {"name": "Пингвин (720p)", "logo": "https://i.imgur.com/hfXoJIY.png", "url": "https://sirius.greenhosting.ru/PingvinRu/video.m3u8"}, {"name": "Солнце (576p)", "logo": "https://i.imgur.com/HCefxaK.png", "url": "http://tv.mediacdn.ru/live/solntse/playlist.m3u8"}, {"name": "优漫卡通 (576p)", "logo": "https://i.imgur.com/GZInf2W.png", "url": "http://183.207.249.15/PLTV/4/224/3221225933/index.m3u8"}, {"name": "金鹰卡通 (576p)", "logo": "https://i.imgur.com/xfVHrKQ.png", "url": "http://223.110.245.145/ott.js.chinamobile.com/PLTV/3/224/3221226303/index.m3u8"}];
+const PROXIES=[u=>u,u=>'https://corsproxy.io/?'+encodeURIComponent(u),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u)];
+const FILTERS={all:()=>true,ani:c=>/anim|cartoon|manga|anime/i.test(c.name),kid:c=>/kid|child|junior|baby|jr|cbeeb|boomer/i.test(c.name)};
+let idx=-1,af='all',hls=null,ctT=null,scT=null;
+const $=id=>document.getElementById(id);
+const vid=$('video'),pa=$('playerArea');
+
+function ini(n){return n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'TV';}
+function showOv(id){['ovWelcome','ovLoad','ovError'].forEach(x=>$(x).classList.toggle('hidden',x!==id));}
+function hideOv(){['ovWelcome','ovLoad','ovError'].forEach(x=>$(x).classList.add('hidden'));}
+
+// Buffer stats
+setInterval(()=>{
+  if(!vid.buffered.length)return;
+  try{
+    const cur=vid.currentTime,buf=vid.buffered;
+    let ah=0;
+    for(let i=0;i<buf.length;i++)if(buf.start(i)<=cur&&buf.end(i)>cur){ah=buf.end(i)-cur;break;}
+    $('ibBuf').textContent=ah.toFixed(1)+'s';
+    const dur=vid.duration||0;
+    if(dur>0){
+      for(let i=0;i<buf.length;i++)if(buf.end(i)>cur){$('ctrlBuf').style.width=((buf.end(i)/dur)*100)+'%';break;}
+      $('ctrlProg').style.width=((cur/dur)*100)+'%';
+    }
+    $('ibSig').className='sig'+(ah>8?' good':ah>3?' med':'');
+  }catch(e){}
+},1000);
+
+// Controls show/hide — pointer AND touch
+function showCtrl(){pa.classList.add('cv');clearTimeout(ctT);ctT=setTimeout(()=>pa.classList.remove('cv'),3500);}
+pa.addEventListener('pointermove',showCtrl);
+pa.addEventListener('touchstart',()=>{
+  if(pa.classList.contains('cv'))pa.classList.remove('cv');
+  else showCtrl();
+},{passive:true});
+
+// Play/pause — using pointer events so it's not blocked
+$('btnPlay').addEventListener('pointerup',e=>{e.stopPropagation();togglePlay();});
+function togglePlay(){
+  if(vid.paused||vid.ended){vid.play().catch(()=>{});$('btnPlay').innerHTML='&#9646;&#9646;';}
+  else{vid.pause();$('btnPlay').innerHTML='&#9654;';}
 }
+vid.addEventListener('play',()=>$('btnPlay').innerHTML='&#9646;&#9646;');
+vid.addEventListener('pause',()=>$('btnPlay').innerHTML='&#9654;');
+
+$('btnMute').addEventListener('pointerup',e=>{e.stopPropagation();toggleMute();});
+function toggleMute(){
+  vid.muted=!vid.muted;
+  $('btnMute').innerHTML=vid.muted?'&#128263;':'&#128266;';
+}
+$('volSl').addEventListener('input',e=>{vid.volume=parseFloat(e.target.value);});
+
+// Fullscreen — works on mobile too
+$('btnFS').addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+function toggleFS(){
+  const frame=document.getElementById('tvFrame');
+  const fs=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement;
+  if(fs){
+    const exit=document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen;
+    if(exit)exit.call(document);
+  }else{
+    const req=frame.requestFullscreen||frame.webkitRequestFullscreen||frame.mozRequestFullScreen;
+    if(req){
+      req.call(frame).catch(()=>{
+        if(vid.webkitEnterFullscreen)vid.webkitEnterFullscreen();
+      });
+    }else if(vid.webkitEnterFullscreen){
+      vid.webkitEnterFullscreen();
+    }
+  }
+}
+
+// Auto fullscreen on landscape rotate (mobile)
+window.addEventListener('orientationchange',()=>{
+  setTimeout(()=>{
+    if((window.orientation===90||window.orientation===-90)&&idx>=0){
+      const el=document.documentElement;
+      const req=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen;
+      if(req&&!document.fullscreenElement&&!document.webkitFullscreenElement)req.call(el).catch(()=>{});
+    }
+  },200);
+});
+// Also listen to screen.orientation API
+if(screen.orientation){
+  screen.orientation.addEventListener('change',()=>{
+    const t=screen.orientation.type;
+    if((t.includes('landscape'))&&idx>=0){
+      const el=document.documentElement;
+      const req=el.requestFullscreen||el.webkitRequestFullscreen;
+      if(req&&!document.fullscreenElement&&!document.webkitFullscreenElement)req.call(el).catch(()=>{});
+    }
+  });
+}
+
+// Side banner rotation
+let scIdx=0;
+const sCards=[[0,1],[2,3]];
+function rotateSideCards(){
+  scT=setInterval(()=>{
+    scIdx=1-scIdx;
+    sCards.forEach((pair)=>{
+      const a=$(pair[0]===0?'sc0':'sc2'),b=$(pair[0]===0?'sc1':'sc3');
+      if(pair===sCards[0]){
+        $('sc0').classList.toggle('visible',scIdx===0);
+        $('sc1').classList.toggle('visible',scIdx===1);
+      }else{
+        $('sc2').classList.toggle('visible',scIdx===0);
+        $('sc3').classList.toggle('visible',scIdx===1);
+      }
+    });
+  },5000);
+}
+rotateSideCards();
+
+// Proxy fallback
+function tryP(c,pi){
+  if(pi>=PROXIES.length){$('ovEM').textContent='Canal no disponible. Intenta con otro.';showOv('ovError');return;}
+  const url=PROXIES[pi](c.url);
+  $('ovLP').textContent=pi===0?'Conectando...':'Intentando servidor '+(pi+1)+'...';
+  if(hls){hls.destroy();hls=null;}
+  vid.src='';
+  if(Hls.isSupported()){
+    hls=new Hls({enableWorker:true,maxBufferLength:30,maxMaxBufferLength:60});
+    hls.loadSource(url);hls.attachMedia(vid);
+    hls.on(Hls.Events.MANIFEST_PARSED,(e,d)=>{
+      hideOv();
+      $('cQual').textContent='LIVE';
+      if(d.levels&&d.levels.length){const l=d.levels[d.levels.length-1];if(l&&l.height)$('cQual').textContent=l.height+'p';}
+      vid.play().catch(()=>{});
+    });
+    hls.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal)setTimeout(()=>tryP(c,pi+1),500);});
+  }else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    vid.src=url;
+    vid.addEventListener('loadedmetadata',()=>{hideOv();$('cQual').textContent='LIVE';vid.play().catch(()=>{});},{once:true});
+    vid.addEventListener('error',()=>tryP(c,pi+1),{once:true});
+  }
+}
+
+function playChannel(i){
+  const c=CH[i];if(!c)return;
+  idx=i;
+  document.querySelectorAll('.ch-item').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.i)===i));
+  const ae=document.querySelector('.ch-item.active');
+  if(ae)ae.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+  $('ibNm').textContent=c.name;$('cLbl').textContent=c.name;
+  $('ibCh').textContent=(i+1)+'/55';$('ibBuf').textContent='...';
+  $('cQual').textContent='...';$('ibSig').className='sig';
+  $('ibLg').src=c.logo;$('ibLg').style.display='block';$('ibFb').style.display='none';
+  $('ibLg').onerror=()=>{$('ibLg').style.display='none';$('ibFb').textContent=ini(c.name);$('ibFb').style.display='block';};
+  $('ovLN').textContent='Cargando '+c.name+'...';$('ovLP').textContent='';
+  showOv('ovLoad');tryP(c,0);
+}
+function retry(){if(idx>=0)playChannel(idx);}
+
+function render(list){
+  const el=$('chList');el.innerHTML='';
+  $('sbN').textContent=list.length+' canal'+(list.length!==1?'es':'');
+  list.forEach(c=>{
+    const ri=CH.indexOf(c),fb=ini(c.name);
+    const item=document.createElement('div');
+    item.className='ch-item'+(ri===idx?' active':'');item.dataset.i=ri;
+    item.innerHTML=`<div class="ch-logo"><img src="${c.logo}" alt="${c.name}" loading="lazy" onerror="this.parentNode.innerHTML='<span class=ch-fb>${fb}</span>'"></div>
+      <div style="min-width:0;flex:1"><div class="ch-name">${c.name}</div><div class="ch-num">Canal ${ri+1}</div></div>
+      <div class="ch-bd">${ri+1}</div>`;
+    item.addEventListener('click',()=>playChannel(ri));
+    el.appendChild(item);
+  });
+}
+
+function applyF(){
+  const q=$('sbS').value.trim().toLowerCase();
+  const fn=FILTERS[af]||FILTERS.all;
+  render(CH.filter(c=>fn(c)&&(!q||c.name.toLowerCase().includes(q))));
+}
+
+$('sbTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.sb-tab');if(!t)return;
+  document.querySelectorAll('.sb-tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');af=t.dataset.f;applyF();
+});
+$('sbS').addEventListener('input',applyF);
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(e.target.tagName))return;
+  if(e.key==='ArrowUp'&&idx>0)playChannel(idx-1);
+  if(e.key==='ArrowDown'&&idx<CH.length-1)playChannel(idx+1);
+  if(e.key===' '){e.preventDefault();if(idx>=0)togglePlay();}
+  if(e.key==='f'||e.key==='F')toggleFS();
+  if(e.key==='m'||e.key==='M')toggleMute();
+});
+
+render(CH);
 </script>
 </body>
 </html>
