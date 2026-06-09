@@ -318,6 +318,38 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   .layout{padding-top:40px !important;}
   :root{--hdr:40px !important;}
 }
+ 
+/* Banners visible in fullscreen */
+#tvFrame:fullscreen,
+#tvFrame:-webkit-full-screen,
+#tvFrame:-moz-full-screen,
+#tvFrame:-ms-fullscreen {
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  width:100vw;
+  height:100vh;
+}
+#tvFrame:fullscreen .banner-top,
+#tvFrame:-webkit-full-screen .banner-top,
+#tvFrame:fullscreen .banner-bottom,
+#tvFrame:-webkit-full-screen .banner-bottom {
+  display:flex !important;
+  flex-shrink:0;
+}
+#tvFrame:fullscreen .tv-mid,
+#tvFrame:-webkit-full-screen .tv-mid {
+  flex:1;
+  display:flex;
+}
+#tvFrame:fullscreen .banner-side,
+#tvFrame:-webkit-full-screen .banner-side {
+  display:flex !important;
+}
+#tvFrame:fullscreen .player-area,
+#tvFrame:-webkit-full-screen .player-area {
+  flex:1;
+}
 </style>
 </head>
 <body>
