@@ -314,7 +314,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   #tvFrame:fullscreen .banner-bottom,#tvFrame:-webkit-full-screen .banner-bottom{height:36px !important;}
 }
 
-/* Ad always visible in fullscreen */
+/* Ad always visible in fullscreen - HIGH PRIORITY */
 #tvFrame:fullscreen #overlayAd,
 #tvFrame:-webkit-full-screen #overlayAd {
   display:flex !important;
@@ -509,8 +509,9 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
             </div>
             <div class="ctrl-row" style="justify-content:center;gap:14px;">
               <button class="c-btn" id="btnMute" onclick="toggleMute()" aria-label="Silencio" style="font-size:22px;">&#128266;</button>
-              <input class="c-vol" id="volSl" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volumen" style="width:160px;">
+              <input class="c-vol" id="volSl" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volumen" style="width:80px;">
               <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);" id="cLbl">—</span>
+              <button class="c-btn" id="btnFS" onclick="toggleFS()" aria-label="Pantalla completa" style="font-size:22px;">&#x26F6;</button>
             </div>
           </div>
         </div>
@@ -602,10 +603,16 @@ setInterval(()=>{
   }catch(e){}
 },1000);
 
-// Controls show/hide — pointer AND touch
-function showCtrl(){pa.classList.add('cv');clearTimeout(ctT);ctT=setTimeout(()=>pa.classList.remove('cv'),3500);}
-pa.addEventListener('pointermove',showCtrl);
-pa.addEventListener('touchstart',()=>{
+// Controls show ONLY on click/tap — not on mouse move
+function showCtrl(){pa.classList.add('cv');clearTimeout(ctT);ctT=setTimeout(()=>pa.classList.remove('cv'),3000);}
+pa.addEventListener('click',e=>{
+  // Don't toggle if clicking a button or input directly
+  if(e.target.closest('.c-btn')||e.target.closest('.c-vol'))return;
+  if(pa.classList.contains('cv'))pa.classList.remove('cv');
+  else showCtrl();
+});
+pa.addEventListener('touchend',e=>{
+  if(e.target.closest('.c-btn')||e.target.closest('.c-vol'))return;
   if(pa.classList.contains('cv'))pa.classList.remove('cv');
   else showCtrl();
 },{passive:true});
