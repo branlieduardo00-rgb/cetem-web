@@ -816,6 +816,24 @@ document.addEventListener('keydown',e=>{
 
 render(CH);
 playChannel(1);
+
+// Fix ad position on orientation change
+function fixAdPosition(){
+  const ad = document.getElementById('overlayAd');
+  if(!ad) return;
+  const isLandscape = window.innerWidth > window.innerHeight;
+  if(isLandscape){
+    ad.style.height = '50%';
+    ad.style.padding = '0 10px 8px';
+  } else {
+    ad.style.height = '35%';
+    ad.style.padding = '0 20px 14px';
+  }
+}
+window.addEventListener('orientationchange', ()=>{ setTimeout(fixAdPosition, 350); });
+window.addEventListener('resize', fixAdPosition);
+fixAdPosition();
+
 </script>
 </body>
 </html>
