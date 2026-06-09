@@ -334,6 +334,41 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   #overlayAd > div > div:last-child { font-size:11px !important; }
   #overlayAd > div > div:nth-child(2) { font-size:17px !important; }
 }
+@media(orientation:landscape) and (max-width:900px){
+  /* Landscape: sidebar shrinks, player takes most space */
+  .layout{flex-direction:row !important;}
+  .sidebar{
+    width:160px !important;min-width:160px !important;
+    height:auto !important;border-right:1px solid var(--border) !important;
+    border-bottom:none !important;
+  }
+  .ch-list{
+    display:flex !important;flex-direction:column !important;
+    overflow-y:auto !important;overflow-x:hidden !important;
+    padding:4px !important;gap:3px !important;
+  }
+  .ch-item{
+    flex-direction:row !important;min-width:0 !important;width:100% !important;
+    padding:7px 8px !important;border:none !important;border-radius:6px !important;
+  }
+  .ch-logo{width:30px !important;height:30px !important;margin-bottom:0 !important;}
+  .ch-name{font-size:10px !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;text-align:left !important;display:block !important;}
+  .ch-item.active{outline:2px solid var(--accent);}
+  .player-col{flex:1 !important;}
+  .player-area{min-height:0 !important;flex:1 !important;}
+  nav{height:36px !important;}
+  .layout{padding-top:36px !important;}
+  .info-bar{height:36px !important;padding:0 10px !important;}
+  .ib-lbl{display:none !important;}
+  .ib-nm{font-size:11px !important;}
+  .banner-top,.banner-bottom{height:38px !important;}
+  .banner-side{display:none !important;}
+  #overlayAd{padding:20px 14px 10px !important;}
+  #overlayAd > div > div:nth-child(2){font-size:16px !important;}
+  #overlayAd > div > div:last-child{display:none !important;}
+  .sb-head{padding:6px 8px !important;}
+  .sb-sw{display:none !important;}
+}
 </style>
 </head>
 <body>
@@ -576,13 +611,13 @@ pa.addEventListener('touchstart',()=>{
 },{passive:true});
 
 // Play/pause — using pointer events so it's not blocked
-$('btnPlay').addEventListener('pointerup',e=>{e.stopPropagation();togglePlay();});
+// btnPlay removed
 function togglePlay(){
   if(vid.paused||vid.ended){vid.play().catch(()=>{});$('btnPlay').innerHTML='&#9646;&#9646;';}
   else{vid.pause();$('btnPlay').innerHTML='&#9654;';}
 }
-vid.addEventListener('play',()=>$('btnPlay').innerHTML='&#9646;&#9646;');
-vid.addEventListener('pause',()=>$('btnPlay').innerHTML='&#9654;');
+
+
 
 $('btnMute').addEventListener('pointerup',e=>{e.stopPropagation();toggleMute();});
 function toggleMute(){
@@ -592,7 +627,7 @@ function toggleMute(){
 $('volSl').addEventListener('input',e=>{vid.volume=parseFloat(e.target.value);});
 
 // Fullscreen — works on mobile too
-$('btnFS').addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+if($('btnFS'))$('btnFS').addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
 function toggleFS(){
   const frame=document.getElementById('tvFrame');
   const fs=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement;
@@ -665,14 +700,14 @@ function tryP(c,pi){
     hls.loadSource(url);hls.attachMedia(vid);
     hls.on(Hls.Events.MANIFEST_PARSED,(e,d)=>{
       hideOv();
-      $('cQual').textContent='LIVE';
-      if(d.levels&&d.levels.length){const l=d.levels[d.levels.length-1];if(l&&l.height)$('cQual').textContent=l.height+'p';}
+      if($('cQual'))$('cQual').textContent='LIVE';
+      if(d.levels&&d.levels.length){const l=d.levels[d.levels.length-1];if(l&&l.height&&$('cQual'))$('cQual').textContent=l.height+'p';}
       vid.play().catch(()=>{});
     });
     hls.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal)setTimeout(()=>tryP(c,pi+1),500);});
   }else if(vid.canPlayType('application/vnd.apple.mpegurl')){
     vid.src=url;
-    vid.addEventListener('loadedmetadata',()=>{hideOv();$('cQual').textContent='LIVE';vid.play().catch(()=>{});},{once:true});
+    vid.addEventListener('loadedmetadata',()=>{hideOv();if($('cQual'))$('cQual').textContent='LIVE';vid.play().catch(()=>{});},{once:true});
     vid.addEventListener('error',()=>tryP(c,pi+1),{once:true});
   }
 }
@@ -685,7 +720,7 @@ function playChannel(i){
   if(ae)ae.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
   $('ibNm').textContent=c.name;$('cLbl').textContent=c.name;
   $('ibCh').textContent=(i+1)+'/55';$('ibBuf').textContent='...';
-  $('cQual').textContent='...';$('ibSig').className='sig';
+  if($('cQual'))$('cQual').textContent='...';$('ibSig').className='sig';
   $('ibLg').src=c.logo;$('ibLg').style.display='block';$('ibFb').style.display='none';
   $('ibLg').onerror=()=>{$('ibLg').style.display='none';$('ibFb').textContent=ini(c.name);$('ibFb').style.display='block';};
   $('ovLN').textContent='Cargando '+c.name+'...';$('ovLP').textContent='';
