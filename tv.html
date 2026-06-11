@@ -30,9 +30,9 @@ nav{
 .live-dot{width:6px;height:6px;background:#e63946;border-radius:50%;animation:blink 1.4s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 .nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);}
+.nav-back:hover{color:#fff;}
 
 .layout{display:flex;flex-direction:column;height:100vh;padding-top:var(--hdr);}
-
 .player-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 
 .banner{height:44px;background:var(--navy);flex-shrink:0;display:flex;align-items:center;overflow:hidden;}
@@ -42,12 +42,11 @@ nav{
 @keyframes tick2{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .t-item{display:inline-flex;align-items:center;gap:8px;padding:0 20px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:#fff;}
 .t-tag{background:var(--gold);color:var(--navy);font-size:8px;font-weight:800;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
-.t-price{color:var(--gold);font-size:14px;font-weight:800;}
+.t-hi{color:var(--gold);font-size:14px;font-weight:800;}
 
 .video-wrap{flex:1;position:relative;background:#000;overflow:hidden;}
 video{width:100%;height:100%;object-fit:contain;display:block;}
 
-/* AD overlay - always visible */
 .ad-overlay{
   position:absolute;bottom:0;left:0;right:0;height:32%;
   background:linear-gradient(transparent,rgba(13,36,97,0.95));
@@ -62,37 +61,27 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .ad-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
 .ad-btn{pointer-events:auto;flex-shrink:0;background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;padding:9px 14px;border-radius:8px;text-decoration:none;white-space:nowrap;align-self:flex-end;}
 
-/* OFFLINE overlay */
-.offline-ov{
-  position:absolute;inset:0;background:var(--bg);
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;text-align:center;padding:32px;z-index:30;
-}
+.offline-ov{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:32px;z-index:30;}
 .offline-ov.show{display:flex;}
 .off-dots{display:grid;grid-template-columns:repeat(3,12px);gap:5px;margin-bottom:8px;}
 .off-dots span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.1);display:block;}
 .off-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:rgba(255,255,255,0.3);letter-spacing:2px;}
 .off-sub{font-size:14px;color:rgba(255,255,255,0.2);max-width:280px;line-height:1.6;}
 
-/* LOADING overlay */
-.load-ov{
-  position:absolute;inset:0;background:rgba(0,0,0,0.85);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:25;
-}
+.load-ov{position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:25;}
 .load-ov.hidden{display:none;}
 .spin{width:44px;height:44px;}
 .spin svg{width:100%;height:100%;animation:spin 0.9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-txt{font-size:13px;color:rgba(255,255,255,0.5);}
 
-/* CONTROLS - show only on click */
-.ctrl{
-  position:absolute;bottom:90px;right:12px;
-  background:rgba(0,0,0,0.55);padding:6px 10px;border-radius:6px;
-  display:flex;align-items:center;gap:8px;
-  opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;
-  z-index:40;
-}
+.play-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:35;cursor:pointer;}
+.play-overlay.show{display:flex;}
+.play-circle{width:80px;height:80px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;box-shadow:0 0 40px rgba(230,57,70,0.5);transition:transform 0.2s;}
+.play-overlay:hover .play-circle{transform:scale(1.1);}
+.play-txt{font-size:14px;color:rgba(255,255,255,0.7);letter-spacing:1px;}
+
+.ctrl{position:absolute;bottom:90px;right:12px;background:rgba(0,0,0,0.55);padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:8px;opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;z-index:40;}
 .video-wrap.cv .ctrl{opacity:1;visibility:visible;}
 .c-btn{background:none;border:none;color:rgba(255,255,255,0.85);cursor:pointer;font-size:16px;padding:4px;display:flex;align-items:center;}
 .c-btn:hover{color:#fff;}
@@ -103,30 +92,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .i-dot{width:8px;height:8px;border-radius:50%;background:#555;flex-shrink:0;}
 .i-dot.live{background:var(--accent);animation:blink 1.4s infinite;}
 .i-name{font-size:13px;font-weight:600;color:#fff;}
-.i-right{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);}
 
-
-/* Play button overlay for mobile */
-.play-overlay{
-  position:absolute;inset:0;
-  background:rgba(0,0,0,0.6);
-  display:none;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:16px;z-index:35;cursor:pointer;
-}
-.play-overlay.show{display:flex;}
-.play-circle{
-  width:80px;height:80px;
-  background:var(--accent);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:30px;color:#fff;
-  box-shadow:0 0 40px rgba(230,57,70,0.5);
-  transition:transform 0.2s;
-}
-.play-overlay:hover .play-circle{transform:scale(1.1);}
-.play-txt{font-size:14px;color:rgba(255,255,255,0.7);letter-spacing:1px;}
-
-/* MOBILE */
 @media(max-width:768px){
   :root{--hdr:48px;}
   .banner{height:34px;}
@@ -134,7 +100,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   .ad-overlay{height:38%;}
   .ad-title{font-size:16px;}
   .ad-sub{display:none;}
-  .nav-back{display:none;}
+  .nav-back{display:flex;}
 }
 
 @media(orientation:landscape) and (max-width:900px){
@@ -164,21 +130,25 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 
     <div class="banner">
       <div class="ticker">
-        <span class="t-item"><span class="t-tag">OFERTA</span>&nbsp;Internet <span class="t-price">400M</span> — </span>
+        <span class="t-item"><span class="t-tag">INTERNET</span>&nbsp;Hasta <span class="t-hi">400 Megas</span> de velocidad</span>
         <span class="t-item">|</span>
         <span class="t-item"><span class="t-tag">GRATIS</span>&nbsp;Instalación completamente gratuita</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">NUEVO</span>&nbsp;TV Digital · 166+ canales en HD</span>
+        <span class="t-item"><span class="t-tag">TV</span>&nbsp;166+ canales digitales en HD</span>
         <span class="t-item">|</span>
-        <span class="t-item">&#128222;&nbsp;Contratar: <span class="t-price">5715-5661</span></span>
+        <span class="t-item">&#128222;&nbsp;Contratar: <span class="t-hi">5715-5661</span></span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">OFERTA</span>&nbsp;Internet <span class="t-price">400M</span> — </span>
+        <span class="t-item"><span class="t-tag">FIBRA</span>&nbsp;Tecnología 100% fibra óptica</span>
+        <span class="t-item">|</span>
+        <span class="t-item"><span class="t-tag">INTERNET</span>&nbsp;Hasta <span class="t-hi">400 Megas</span> de velocidad</span>
         <span class="t-item">|</span>
         <span class="t-item"><span class="t-tag">GRATIS</span>&nbsp;Instalación completamente gratuita</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">NUEVO</span>&nbsp;TV Digital · 166+ canales en HD</span>
+        <span class="t-item"><span class="t-tag">TV</span>&nbsp;166+ canales digitales en HD</span>
         <span class="t-item">|</span>
-        <span class="t-item">&#128222;&nbsp;Contratar: <span class="t-price">5715-5661</span></span>
+        <span class="t-item">&#128222;&nbsp;Contratar: <span class="t-hi">5715-5661</span></span>
+        <span class="t-item">|</span>
+        <span class="t-item"><span class="t-tag">FIBRA</span>&nbsp;Tecnología 100% fibra óptica</span>
         <span class="t-item">|</span>
       </div>
     </div>
@@ -197,16 +167,16 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
         <div class="load-txt">Conectando al stream...</div>
       </div>
 
-
       <div class="play-overlay" id="playOv" onclick="userPlay()">
         <div class="play-circle">&#9654;</div>
         <div class="play-txt">Toca para ver en vivo</div>
       </div>
+
       <div class="ad-overlay">
         <div class="ad-text">
           <div class="ad-label">PUBLICIDAD</div>
-          <div class="ad-title">Internet <em>400 Megas</em> — <em>---</em></div>
-          <div class="ad-sub">Fibra óptica · Instalación gratis · San Antonio Sac. S.M.</div>
+          <div class="ad-title">Internet hasta <em>400 Megas</em> · Fibra Óptica</div>
+          <div class="ad-sub">Instalación gratis · San Antonio Sac. S.M. · 5715-5661</div>
         </div>
         <a href="https://wa.me/50257155661" target="_blank" class="ad-btn">&#128222; Contratar</a>
       </div>
@@ -219,19 +189,19 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 
     <div class="banner" style="border-top:1px solid var(--border);border-bottom:none;">
       <div class="ticker2">
-        <span class="t-item"><span class="t-tag">BÁSICO</span>&nbsp;50 Megas —  · Instalación gratis</span>
+        <span class="t-item"><span class="t-tag">BÁSICO</span>&nbsp;50 Megas · WiFi incluido · Instalación gratis</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">ESTÁNDAR</span>&nbsp;200 Megas —  · El más popular</span>
+        <span class="t-item"><span class="t-tag">ESTÁNDAR</span>&nbsp;200 Megas · WiFi potenciado · Soporte prioritario</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">PREMIUM</span>&nbsp;400 Megas —  · Máxima velocidad</span>
+        <span class="t-item"><span class="t-tag">PREMIUM</span>&nbsp;400 Megas · WiFi empresarial · Máxima velocidad</span>
         <span class="t-item">|</span>
         <span class="t-item">&#128205;&nbsp;Media cuadra de la Caseta · San Antonio Sac. S.M.</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">BÁSICO</span>&nbsp;50 Megas —  · Instalación gratis</span>
+        <span class="t-item"><span class="t-tag">BÁSICO</span>&nbsp;50 Megas · WiFi incluido · Instalación gratis</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">ESTÁNDAR</span>&nbsp;200 Megas —  · El más popular</span>
+        <span class="t-item"><span class="t-tag">ESTÁNDAR</span>&nbsp;200 Megas · WiFi potenciado · Soporte prioritario</span>
         <span class="t-item">|</span>
-        <span class="t-item"><span class="t-tag">PREMIUM</span>&nbsp;400 Megas —  · Máxima velocidad</span>
+        <span class="t-item"><span class="t-tag">PREMIUM</span>&nbsp;400 Megas · WiFi empresarial · Máxima velocidad</span>
         <span class="t-item">|</span>
         <span class="t-item">&#128205;&nbsp;Media cuadra de la Caseta · San Antonio Sac. S.M.</span>
         <span class="t-item">|</span>
@@ -243,12 +213,13 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   <div class="info-bar">
     <div class="i-dot live" id="iDot"></div>
     <div class="i-name" id="iName">Conectando...</div>
-    <div class="i-right" id="iRight"></div>
   </div>
 </div>
 
 <script>
+// ACTUALIZA ESTA URL cuando el servidor se reinicie
 const STREAM = 'https://resorts-jelsoft-prayers-oldest.trycloudflare.com/hls/stream.m3u8';
+
 const vid = document.getElementById('video');
 const vw = document.getElementById('vw');
 const offOv = document.getElementById('offOv');
@@ -256,142 +227,56 @@ const loadOv = document.getElementById('loadOv');
 const playOv = document.getElementById('playOv');
 const iDot = document.getElementById('iDot');
 const iName = document.getElementById('iName');
-let hls = null;
-let ctTimer = null;
-let retryTimer = null;
-let streamReady = false;
+let hls = null, ctTimer = null, retryTimer = null;
 
-function showOffline(){
-  offOv.classList.add('show');
-  loadOv.classList.add('hidden');
-  playOv.classList.remove('show');
-  iDot.classList.remove('live');
-  iName.textContent = 'Sin transmisión';
-}
+function showOffline(){offOv.classList.add('show');loadOv.classList.add('hidden');playOv.classList.remove('show');iDot.classList.remove('live');iName.textContent='Sin transmisión';}
+function showLoading(){offOv.classList.remove('show');loadOv.classList.remove('hidden');playOv.classList.remove('show');iName.textContent='Conectando...';}
+function showLive(){offOv.classList.remove('show');loadOv.classList.add('hidden');playOv.classList.remove('show');iDot.classList.add('live');iName.textContent='Transmisión en vivo';}
+function showPlayBtn(){offOv.classList.remove('show');loadOv.classList.add('hidden');playOv.classList.add('show');iDot.classList.add('live');iName.textContent='Toca para reproducir';}
 
-function showLoading(){
-  offOv.classList.remove('show');
-  loadOv.classList.remove('hidden');
-  playOv.classList.remove('show');
-  iName.textContent = 'Conectando...';
-}
-
-function showLive(){
-  offOv.classList.remove('show');
-  loadOv.classList.add('hidden');
-  playOv.classList.remove('show');
-  iDot.classList.add('live');
-  iName.textContent = 'Transmisión en vivo';
-  streamReady = true;
-}
-
-function showPlayButton(){
-  offOv.classList.remove('show');
-  loadOv.classList.add('hidden');
-  playOv.classList.add('show');
-  iDot.classList.add('live');
-  iName.textContent = 'Toca para reproducir';
-}
-
-// Jump to live edge - called when user resumes after pause
 function jumpToLive(){
-  if(hls){
-    // Force seek to live edge
-    if(hls.liveSyncPosition){
-      vid.currentTime = hls.liveSyncPosition;
-    }
-    vid.play().catch(()=>{});
-  } else if(vid.duration){
-    vid.currentTime = vid.duration;
-    vid.play().catch(()=>{});
-  }
+  if(hls&&hls.liveSyncPosition){vid.currentTime=hls.liveSyncPosition;}
+  else if(vid.duration){vid.currentTime=vid.duration;}
+  vid.play().catch(()=>{});
 }
 
-// User taps play button
 function userPlay(){
   playOv.classList.remove('show');
-  vid.play().catch(()=>{
-    // If autoplay blocked, try muted first
-    vid.muted = true;
-    document.getElementById('muteBtn').innerHTML = '&#128263;';
-    vid.play().catch(()=>{});
-  });
+  vid.play().catch(()=>{vid.muted=true;document.getElementById('muteBtn').innerHTML='&#128263;';vid.play().catch(()=>{});});
   jumpToLive();
 }
 
 function startStream(){
   showLoading();
-  streamReady = false;
   if(hls){hls.destroy();hls=null;}
   vid.src='';
-
   if(Hls.isSupported()){
-    hls = new Hls({
-      enableWorker:true,
-      maxBufferLength:8,
-      maxMaxBufferLength:8,
-      liveSyncDurationCount:2,
-      liveMaxLatencyDurationCount:4,
-      liveDurationInfinity:true,
-    });
+    hls=new Hls({enableWorker:true,maxBufferLength:8,maxMaxBufferLength:8,liveSyncDurationCount:2,liveMaxLatencyDurationCount:4,liveDurationInfinity:true});
     hls.loadSource(STREAM);
     hls.attachMedia(vid);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{
-      showLive();
-      // Try autoplay
-      vid.play().catch(()=>{
-        // Mobile blocked autoplay - show play button
-        showPlayButton();
-      });
-    });
-    hls.on(Hls.Events.ERROR,(e,d)=>{
-      if(d.fatal){
-        showOffline();
-        clearTimeout(retryTimer);
-        retryTimer = setTimeout(startStream, 15000);
-      }
-    });
-  } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
-    // iOS Safari
-    vid.src = STREAM;
-    vid.addEventListener('loadedmetadata',()=>{
-      showLive();
-      vid.play().catch(()=>{ showPlayButton(); });
-    },{once:true});
-    vid.addEventListener('error',()=>{
-      showOffline();
-      retryTimer = setTimeout(startStream, 15000);
-    },{once:true});
-  } else {
-    showOffline();
-  }
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>{showLive();vid.play().catch(()=>showPlayBtn());});
+    hls.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal){showOffline();clearTimeout(retryTimer);retryTimer=setTimeout(startStream,15000);}});
+  }else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    vid.src=STREAM;
+    vid.addEventListener('loadedmetadata',()=>{showLive();vid.play().catch(()=>showPlayBtn());},{once:true});
+    vid.addEventListener('error',()=>{showOffline();retryTimer=setTimeout(startStream,15000);},{once:true});
+  }else{showOffline();}
 }
 
-// When video is paused and user presses play - jump to live
-vid.addEventListener('play', ()=>{
-  // If we're behind live by more than 10 seconds, jump to live
-  if(hls && hls.liveSyncPosition && hls.liveSyncPosition - vid.currentTime > 10){
-    vid.currentTime = hls.liveSyncPosition;
-  }
+vid.addEventListener('play',()=>{
+  if(hls&&hls.liveSyncPosition&&hls.liveSyncPosition-vid.currentTime>10){vid.currentTime=hls.liveSyncPosition;}
 });
 
-// Controls on click only
-vw.addEventListener('click', e=>{
-  if(e.target.closest('#ctrl') || e.target.closest('#playOv')) return;
-  if(vw.classList.contains('cv')){vw.classList.remove('cv');}
+vw.addEventListener('click',e=>{
+  if(e.target.closest('#ctrl')||e.target.closest('#playOv'))return;
+  if(vw.classList.contains('cv'))vw.classList.remove('cv');
   else{vw.classList.add('cv');clearTimeout(ctTimer);ctTimer=setTimeout(()=>vw.classList.remove('cv'),2000);}
 });
 
-function toggleMute(){
-  vid.muted=!vid.muted;
-  document.getElementById('muteBtn').innerHTML=vid.muted?'&#128263;':'&#128266;';
-}
+function toggleMute(){vid.muted=!vid.muted;document.getElementById('muteBtn').innerHTML=vid.muted?'&#128263;':'&#128266;';}
 document.getElementById('volSl').addEventListener('input',e=>vid.volume=parseFloat(e.target.value));
-
-// Disable spacebar pause
 document.addEventListener('keydown',e=>{if(e.key===' ')e.preventDefault();});
 
-// Auto landscape fullscreen on mobile
 window.addEventListener('orientationchange',()=>{
   setTimeout(()=>{
     if(window.innerWidth>window.innerHeight){
@@ -402,7 +287,6 @@ window.addEventListener('orientationchange',()=>{
   },300);
 });
 
-// Start
 startStream();
 </script>
 </body>
