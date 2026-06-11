@@ -105,6 +105,27 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .i-name{font-size:13px;font-weight:600;color:#fff;}
 .i-right{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);}
 
+
+/* Play button overlay for mobile */
+.play-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:16px;z-index:35;cursor:pointer;
+}
+.play-overlay.show{display:flex;}
+.play-circle{
+  width:80px;height:80px;
+  background:var(--accent);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;color:#fff;
+  box-shadow:0 0 40px rgba(230,57,70,0.5);
+  transition:transform 0.2s;
+}
+.play-overlay:hover .play-circle{transform:scale(1.1);}
+.play-txt{font-size:14px;color:rgba(255,255,255,0.7);letter-spacing:1px;}
+
 /* MOBILE */
 @media(max-width:768px){
   :root{--hdr:48px;}
@@ -176,6 +197,11 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
         <div class="load-txt">Conectando al stream...</div>
       </div>
 
+
+      <div class="play-overlay" id="playOv" onclick="userPlay()">
+        <div class="play-circle">&#9654;</div>
+        <div class="play-txt">Toca para ver en vivo</div>
+      </div>
       <div class="ad-overlay">
         <div class="ad-text">
           <div class="ad-label">PUBLICIDAD</div>
@@ -227,15 +253,18 @@ const vid = document.getElementById('video');
 const vw = document.getElementById('vw');
 const offOv = document.getElementById('offOv');
 const loadOv = document.getElementById('loadOv');
+const playOv = document.getElementById('playOv');
 const iDot = document.getElementById('iDot');
 const iName = document.getElementById('iName');
 let hls = null;
 let ctTimer = null;
 let retryTimer = null;
+let streamReady = false;
 
 function showOffline(){
   offOv.classList.add('show');
   loadOv.classList.add('hidden');
+  playOv.classList.remove('show');
   iDot.classList.remove('live');
   iName.textContent = 'Sin transmisión';
 }
@@ -243,57 +272,112 @@ function showOffline(){
 function showLoading(){
   offOv.classList.remove('show');
   loadOv.classList.remove('hidden');
+  playOv.classList.remove('show');
   iName.textContent = 'Conectando...';
 }
 
 function showLive(){
   offOv.classList.remove('show');
   loadOv.classList.add('hidden');
+  playOv.classList.remove('show');
   iDot.classList.add('live');
   iName.textContent = 'Transmisión en vivo';
+  streamReady = true;
+}
+
+function showPlayButton(){
+  offOv.classList.remove('show');
+  loadOv.classList.add('hidden');
+  playOv.classList.add('show');
+  iDot.classList.add('live');
+  iName.textContent = 'Toca para reproducir';
+}
+
+// Jump to live edge - called when user resumes after pause
+function jumpToLive(){
+  if(hls){
+    // Force seek to live edge
+    if(hls.liveSyncPosition){
+      vid.currentTime = hls.liveSyncPosition;
+    }
+    vid.play().catch(()=>{});
+  } else if(vid.duration){
+    vid.currentTime = vid.duration;
+    vid.play().catch(()=>{});
+  }
+}
+
+// User taps play button
+function userPlay(){
+  playOv.classList.remove('show');
+  vid.play().catch(()=>{
+    // If autoplay blocked, try muted first
+    vid.muted = true;
+    document.getElementById('muteBtn').innerHTML = '&#128263;';
+    vid.play().catch(()=>{});
+  });
+  jumpToLive();
 }
 
 function startStream(){
   showLoading();
+  streamReady = false;
   if(hls){hls.destroy();hls=null;}
   vid.src='';
 
   if(Hls.isSupported()){
     hls = new Hls({
       enableWorker:true,
-      maxBufferLength:30,
-      liveSyncDurationCount:3,
-      liveMaxLatencyDurationCount:6,
+      maxBufferLength:8,
+      maxMaxBufferLength:8,
+      liveSyncDurationCount:2,
+      liveMaxLatencyDurationCount:4,
+      liveDurationInfinity:true,
     });
     hls.loadSource(STREAM);
     hls.attachMedia(vid);
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{
       showLive();
-      vid.play().catch(()=>{});
+      // Try autoplay
+      vid.play().catch(()=>{
+        // Mobile blocked autoplay - show play button
+        showPlayButton();
+      });
     });
     hls.on(Hls.Events.ERROR,(e,d)=>{
       if(d.fatal){
         showOffline();
-        // Retry every 15 seconds
         clearTimeout(retryTimer);
         retryTimer = setTimeout(startStream, 15000);
       }
     });
   } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
-    vid.src=STREAM;
-    vid.addEventListener('loadedmetadata',()=>{showLive();vid.play().catch(()=>{});},{once:true});
+    // iOS Safari
+    vid.src = STREAM;
+    vid.addEventListener('loadedmetadata',()=>{
+      showLive();
+      vid.play().catch(()=>{ showPlayButton(); });
+    },{once:true});
     vid.addEventListener('error',()=>{
       showOffline();
-      retryTimer=setTimeout(startStream,15000);
+      retryTimer = setTimeout(startStream, 15000);
     },{once:true});
   } else {
     showOffline();
   }
 }
 
+// When video is paused and user presses play - jump to live
+vid.addEventListener('play', ()=>{
+  // If we're behind live by more than 10 seconds, jump to live
+  if(hls && hls.liveSyncPosition && hls.liveSyncPosition - vid.currentTime > 10){
+    vid.currentTime = hls.liveSyncPosition;
+  }
+});
+
 // Controls on click only
 vw.addEventListener('click', e=>{
-  if(e.target.closest('#ctrl'))return;
+  if(e.target.closest('#ctrl') || e.target.closest('#playOv')) return;
   if(vw.classList.contains('cv')){vw.classList.remove('cv');}
   else{vw.classList.add('cv');clearTimeout(ctTimer);ctTimer=setTimeout(()=>vw.classList.remove('cv'),2000);}
 });
@@ -304,10 +388,10 @@ function toggleMute(){
 }
 document.getElementById('volSl').addEventListener('input',e=>vid.volume=parseFloat(e.target.value));
 
-// Disable spacebar
+// Disable spacebar pause
 document.addEventListener('keydown',e=>{if(e.key===' ')e.preventDefault();});
 
-// Auto landscape fullscreen
+// Auto landscape fullscreen on mobile
 window.addEventListener('orientationchange',()=>{
   setTimeout(()=>{
     if(window.innerWidth>window.innerHeight){
