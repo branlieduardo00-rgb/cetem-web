@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LINK TV — En Vivo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.12/dist/hls.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
@@ -14,7 +15,6 @@
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:#fff;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
 
-/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:100;
   background:rgba(13,36,97,0.97);border-bottom:1px solid var(--border);
@@ -30,133 +30,98 @@ nav{
 .live-dot{width:6px;height:6px;background:#e63946;border-radius:50%;animation:blink 1.4s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 .nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);}
-.nav-back:hover{color:#fff;}
 
-/* LAYOUT */
-.layout{
-  display:flex;flex-direction:column;
-  height:100vh;padding-top:var(--hdr);
-}
+.layout{display:flex;flex-direction:column;height:100vh;padding-top:var(--hdr);}
 
-/* PLAYER AREA */
-.player-wrap{
-  flex:1;position:relative;background:#000;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
+.player-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 
-/* TOP BANNER */
-.banner-top{
-  height:42px;background:var(--navy);flex-shrink:0;
-  display:flex;align-items:center;overflow:hidden;
-  border-bottom:1px solid var(--border);
-}
+.banner{height:44px;background:var(--navy);flex-shrink:0;display:flex;align-items:center;overflow:hidden;}
 .ticker{display:flex;white-space:nowrap;animation:tick 35s linear infinite;}
-.ticker:hover{animation-play-state:paused;}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.t-item{
-  display:inline-flex;align-items:center;gap:8px;padding:0 20px;
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:#fff;
-}
+.ticker2{display:flex;white-space:nowrap;animation:tick2 40s linear infinite;}
+@keyframes tick2{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.t-item{display:inline-flex;align-items:center;gap:8px;padding:0 20px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:#fff;}
 .t-tag{background:var(--gold);color:var(--navy);font-size:8px;font-weight:800;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
 .t-price{color:var(--gold);font-size:14px;font-weight:800;}
 
-/* VIDEO CONTAINER */
-.video-container{
-  flex:1;position:relative;overflow:hidden;
-}
+.video-wrap{flex:1;position:relative;background:#000;overflow:hidden;}
+video{width:100%;height:100%;object-fit:contain;display:block;}
 
-/* RESTREAM IFRAME */
-.video-container iframe{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  border:none;
-}
-
-/* OFFLINE OVERLAY */
-.offline-overlay{
-  position:absolute;inset:0;
-  background:var(--bg);
-  display:none;
-  flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;text-align:center;padding:32px;
-  z-index:10;
-}
-.offline-overlay.show{display:flex;}
-.off-dots{display:grid;grid-template-columns:repeat(3,12px);gap:5px;margin-bottom:8px;}
-.off-dots span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.15);display:block;}
-.off-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:rgba(255,255,255,0.4);letter-spacing:2px;}
-.off-sub{font-size:14px;color:rgba(255,255,255,0.25);max-width:300px;line-height:1.6;}
-
-/* AD OVERLAY - always visible over video */
+/* AD overlay - always visible */
 .ad-overlay{
-  position:absolute;bottom:0;left:0;right:0;
-  height:32%;
+  position:absolute;bottom:0;left:0;right:0;height:32%;
   background:linear-gradient(transparent,rgba(13,36,97,0.95));
   z-index:20;pointer-events:none;
   display:flex;align-items:flex-end;
-  padding:0 16px 12px;
-  justify-content:space-between;gap:12px;
+  padding:0 16px 12px;justify-content:space-between;gap:12px;
 }
 .ad-text{pointer-events:auto;}
 .ad-label{font-size:8px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.35);margin-bottom:3px;}
-.ad-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;line-height:1.1;}
+.ad-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1.1;}
 .ad-title em{color:var(--gold);font-style:normal;}
 .ad-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
-.ad-btn{
-  pointer-events:auto;flex-shrink:0;
-  background:var(--gold);color:var(--navy);
-  font-size:11px;font-weight:800;
-  padding:8px 14px;border-radius:8px;
-  text-decoration:none;white-space:nowrap;
-  align-self:flex-end;
-}
+.ad-btn{pointer-events:auto;flex-shrink:0;background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;padding:9px 14px;border-radius:8px;text-decoration:none;white-space:nowrap;align-self:flex-end;}
 
-/* BOTTOM BANNER */
-.banner-bottom{
-  height:42px;background:var(--navy);flex-shrink:0;
-  display:flex;align-items:center;overflow:hidden;
-  border-top:1px solid var(--border);
+/* OFFLINE overlay */
+.offline-ov{
+  position:absolute;inset:0;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;text-align:center;padding:32px;z-index:30;
 }
-.ticker2{display:flex;white-space:nowrap;animation:tick2 40s linear infinite;}
-@keyframes tick2{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.offline-ov.show{display:flex;}
+.off-dots{display:grid;grid-template-columns:repeat(3,12px);gap:5px;margin-bottom:8px;}
+.off-dots span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.1);display:block;}
+.off-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:rgba(255,255,255,0.3);letter-spacing:2px;}
+.off-sub{font-size:14px;color:rgba(255,255,255,0.2);max-width:280px;line-height:1.6;}
 
-/* INFO BAR */
-.info-bar{
-  height:46px;background:var(--bg2);border-top:1px solid var(--border);
-  display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;
+/* LOADING overlay */
+.load-ov{
+  position:absolute;inset:0;background:rgba(0,0,0,0.85);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:25;
 }
-.info-status{
-  display:flex;align-items:center;gap:6px;
-  font-size:12px;font-weight:600;
+.load-ov.hidden{display:none;}
+.spin{width:44px;height:44px;}
+.spin svg{width:100%;height:100%;animation:spin 0.9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-txt{font-size:13px;color:rgba(255,255,255,0.5);}
+
+/* CONTROLS - show only on click */
+.ctrl{
+  position:absolute;bottom:90px;right:12px;
+  background:rgba(0,0,0,0.55);padding:6px 10px;border-radius:6px;
+  display:flex;align-items:center;gap:8px;
+  opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;
+  z-index:40;
 }
-.status-dot{width:8px;height:8px;border-radius:50%;background:#555;}
-.status-dot.live{background:#e63946;animation:blink 1.4s infinite;}
-.info-name{font-size:13px;font-weight:600;color:#fff;}
-.info-right{margin-left:auto;display:flex;gap:12px;align-items:center;}
-.vol-wrap{display:flex;align-items:center;gap:6px;opacity:0;transition:opacity 0.25s;}
-.video-container:hover .vol-wrap,
-.video-container.cv .vol-wrap{opacity:1;}
+.video-wrap.cv .ctrl{opacity:1;visibility:visible;}
+.c-btn{background:none;border:none;color:rgba(255,255,255,0.85);cursor:pointer;font-size:16px;padding:4px;display:flex;align-items:center;}
+.c-btn:hover{color:#fff;}
+.c-vol{width:60px;height:3px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,0.25);border-radius:2px;outline:none;cursor:pointer;}
+.c-vol::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;background:#fff;border-radius:50%;}
+
+.info-bar{height:44px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;}
+.i-dot{width:8px;height:8px;border-radius:50%;background:#555;flex-shrink:0;}
+.i-dot.live{background:var(--accent);animation:blink 1.4s infinite;}
+.i-name{font-size:13px;font-weight:600;color:#fff;}
+.i-right{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);}
 
 /* MOBILE */
 @media(max-width:768px){
   :root{--hdr:48px;}
-  .banner-top,.banner-bottom{height:34px;}
-  .t-item{font-size:10px;padding:0 14px;}
+  .banner{height:34px;}
+  .t-item{font-size:10px;padding:0 12px;}
   .ad-overlay{height:38%;}
-  .ad-title{font-size:15px;}
+  .ad-title{font-size:16px;}
   .ad-sub{display:none;}
   .nav-back{display:none;}
 }
 
-/* LANDSCAPE MOBILE */
 @media(orientation:landscape) and (max-width:900px){
-  .banner-top,.banner-bottom{display:none;}
+  .banner{display:none !important;}
   nav{height:32px !important;}
   .layout{padding-top:32px !important;}
-  .nav-brand{font-size:16px !important;}
   .nav-sub{display:none;}
-  .info-bar{height:30px !important;}
+  .info-bar{height:28px !important;}
   .ad-title{font-size:13px !important;}
   .ad-overlay{height:40%;}
 }
@@ -166,10 +131,7 @@ nav{
 
 <nav>
   <div class="nav-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-  <div>
-    <div class="nav-brand">LINK</div>
-    <div class="nav-sub">TV EN VIVO</div>
-  </div>
+  <div><div class="nav-brand">LINK</div><div class="nav-sub">TV EN VIVO</div></div>
   <div class="nav-r">
     <div class="nav-live"><div class="live-dot"></div>EN VIVO</div>
     <a href="index.html" class="nav-back">&#8592; Inicio</a>
@@ -179,8 +141,7 @@ nav{
 <div class="layout">
   <div class="player-wrap">
 
-    <!-- TOP BANNER -->
-    <div class="banner-top">
+    <div class="banner">
       <div class="ticker">
         <span class="t-item"><span class="t-tag">OFERTA</span>&nbsp;Internet <span class="t-price">400M</span> — Solo Q350/mes</span>
         <span class="t-item">|</span>
@@ -201,29 +162,20 @@ nav{
       </div>
     </div>
 
-    <!-- VIDEO -->
-    <div class="video-container" id="videoContainer">
+    <div class="video-wrap" id="vw">
+      <video id="video" playsinline webkit-playsinline></video>
 
-      <!-- RESTREAM PLAYER -->
-      <iframe
-        src="https://player.restream.io/?token=4dd1ef8e-7e97-404a-95a4-67b4ab4f6538&autoplay=1&muted=0"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-        id="streamFrame"
-      ></iframe>
-
-      <!-- OFFLINE MESSAGE -->
-      <div class="offline-overlay" id="offlineOverlay">
-        <div class="off-dots">
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
-        </div>
+      <div class="offline-ov" id="offOv">
+        <div class="off-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <div class="off-title">SIN TRANSMISIÓN</div>
-        <div class="off-sub">No hay transmisión en este momento.<br>Vuelve más tarde.</div>
+        <div class="off-sub">No hay transmisión en este momento. Vuelve más tarde.</div>
       </div>
 
-      <!-- AD OVERLAY -->
+      <div class="load-ov" id="loadOv">
+        <div class="spin"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.08)" stroke-width="4"/><path d="M22 4 A18 18 0 0 1 40 22" stroke="#e63946" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="load-txt">Conectando al stream...</div>
+      </div>
+
       <div class="ad-overlay">
         <div class="ad-text">
           <div class="ad-label">PUBLICIDAD</div>
@@ -233,10 +185,13 @@ nav{
         <a href="https://wa.me/50257155661" target="_blank" class="ad-btn">&#128222; Contratar</a>
       </div>
 
+      <div class="ctrl" id="ctrl">
+        <button class="c-btn" id="muteBtn" onclick="toggleMute()">&#128266;</button>
+        <input class="c-vol" id="volSl" type="range" min="0" max="1" step="0.05" value="1">
+      </div>
     </div>
 
-    <!-- BOTTOM BANNER -->
-    <div class="banner-bottom">
+    <div class="banner" style="border-top:1px solid var(--border);border-bottom:none;">
       <div class="ticker2">
         <span class="t-item"><span class="t-tag">BÁSICO</span>&nbsp;50 Megas — Q150/mes · Instalación gratis</span>
         <span class="t-item">|</span>
@@ -259,59 +214,112 @@ nav{
 
   </div>
 
-  <!-- INFO BAR -->
   <div class="info-bar">
-    <div class="info-status">
-      <div class="status-dot live" id="statusDot"></div>
-      <span class="info-name" id="statusText">Transmisión en vivo</span>
-    </div>
-    <div class="info-right">
-      <span style="font-size:11px;color:rgba(255,255,255,0.3);" id="viewerCount"></span>
-    </div>
+    <div class="i-dot live" id="iDot"></div>
+    <div class="i-name" id="iName">Conectando...</div>
+    <div class="i-right" id="iRight"></div>
   </div>
 </div>
 
 <script>
-// Check if stream is live by pinging Restream API
-const STREAM_ID = '4dd1ef8e-7e97-404a-95a4-67b4ab4f6538';
+const STREAM = 'https://door-parameters-wed-melbourne.trycloudflare.com/hls/stream.m3u8';
+const vid = document.getElementById('video');
+const vw = document.getElementById('vw');
+const offOv = document.getElementById('offOv');
+const loadOv = document.getElementById('loadOv');
+const iDot = document.getElementById('iDot');
+const iName = document.getElementById('iName');
+let hls = null;
+let ctTimer = null;
+let retryTimer = null;
 
-async function checkStreamStatus(){
-  try{
-    // Try to fetch the player page - if stream is offline iframe shows offline message
-    // We detect offline by checking if the iframe loads correctly
-    // For now we show live status when page loads
-    // Restream auto-shows offline message in the iframe when stream stops
-    document.getElementById('statusDot').classList.add('live');
-    document.getElementById('statusText').textContent = 'Transmisión en vivo';
-  }catch(e){
-    document.getElementById('statusDot').classList.remove('live');
-    document.getElementById('statusText').textContent = 'Sin transmisión';
+function showOffline(){
+  offOv.classList.add('show');
+  loadOv.classList.add('hidden');
+  iDot.classList.remove('live');
+  iName.textContent = 'Sin transmisión';
+}
+
+function showLoading(){
+  offOv.classList.remove('show');
+  loadOv.classList.remove('hidden');
+  iName.textContent = 'Conectando...';
+}
+
+function showLive(){
+  offOv.classList.remove('show');
+  loadOv.classList.add('hidden');
+  iDot.classList.add('live');
+  iName.textContent = 'Transmisión en vivo';
+}
+
+function startStream(){
+  showLoading();
+  if(hls){hls.destroy();hls=null;}
+  vid.src='';
+
+  if(Hls.isSupported()){
+    hls = new Hls({
+      enableWorker:true,
+      maxBufferLength:30,
+      liveSyncDurationCount:3,
+      liveMaxLatencyDurationCount:6,
+    });
+    hls.loadSource(STREAM);
+    hls.attachMedia(vid);
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+      showLive();
+      vid.play().catch(()=>{});
+    });
+    hls.on(Hls.Events.ERROR,(e,d)=>{
+      if(d.fatal){
+        showOffline();
+        // Retry every 15 seconds
+        clearTimeout(retryTimer);
+        retryTimer = setTimeout(startStream, 15000);
+      }
+    });
+  } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    vid.src=STREAM;
+    vid.addEventListener('loadedmetadata',()=>{showLive();vid.play().catch(()=>{});},{once:true});
+    vid.addEventListener('error',()=>{
+      showOffline();
+      retryTimer=setTimeout(startStream,15000);
+    },{once:true});
+  } else {
+    showOffline();
   }
 }
 
-// Check status on load
-checkStreamStatus();
+// Controls on click only
+vw.addEventListener('click', e=>{
+  if(e.target.closest('#ctrl'))return;
+  if(vw.classList.contains('cv')){vw.classList.remove('cv');}
+  else{vw.classList.add('cv');clearTimeout(ctTimer);ctTimer=setTimeout(()=>vw.classList.remove('cv'),2000);}
+});
+
+function toggleMute(){
+  vid.muted=!vid.muted;
+  document.getElementById('muteBtn').innerHTML=vid.muted?'&#128263;':'&#128266;';
+}
+document.getElementById('volSl').addEventListener('input',e=>vid.volume=parseFloat(e.target.value));
 
 // Disable spacebar
-document.addEventListener('keydown', e=>{
-  if(e.key===' ') e.preventDefault();
-});
+document.addEventListener('keydown',e=>{if(e.key===' ')e.preventDefault();});
 
-// Orientation - go fullscreen on landscape
-function isLandscape(){
-  return window.innerWidth > window.innerHeight;
-}
-
-window.addEventListener('orientationchange', ()=>{
+// Auto landscape fullscreen
+window.addEventListener('orientationchange',()=>{
   setTimeout(()=>{
-    if(isLandscape()){
-      const el = document.documentElement;
-      const req = el.requestFullscreen||el.webkitRequestFullscreen;
-      if(req) req.call(el).catch(()=>{});
+    if(window.innerWidth>window.innerHeight){
+      const el=document.documentElement;
+      const req=el.requestFullscreen||el.webkitRequestFullscreen;
+      if(req&&!document.fullscreenElement)req.call(el).catch(()=>{});
     }
-  }, 300);
+  },300);
 });
-</script>
 
+// Start
+startStream();
+</script>
 </body>
 </html>
